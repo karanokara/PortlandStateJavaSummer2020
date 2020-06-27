@@ -3,7 +3,7 @@
   
   <!--
 
-Replace the strings "YourUserId" and "YourGitHubUser" in this file
+Replace the strings "YourUserId" and "karanokara" in this file
 accordingly
 
 -->
@@ -32,7 +32,7 @@ accordingly
     
   <description>Source code written in the Winter 2020 offering of Advanced Programming with Java</description>
     
-  <url>http://YourGitHubUser.github.io/PortlandStateJavaSummer2020</url>
+  <url>http://karanokara.github.io/PortlandStateJavaSummer2020</url>
     
   <modules>
         
@@ -54,7 +54,7 @@ accordingly
         
     <system>github</system>
         
-    <url>https://github.com/YourGitHubUser/PortlandStateJavaSummer2020/issues</url>
+    <url>https://github.com/karanokara/PortlandStateJavaSummer2020/issues</url>
       
   </issueManagement>
     
@@ -102,7 +102,7 @@ accordingly
     
   <scm>
         
-    <connection>scm:git:git@github.com:YourGitHubUser/PortlandStateJavaSummer2020.git</connection>
+    <connection>scm:git:git@github.com:karanokara/PortlandStateJavaSummer2020.git</connection>
       
   </scm>
     
@@ -128,7 +128,7 @@ accordingly
             
       <name>GitHub Pages</name>
             
-      <url>github:http://YourGitHubUser.github.io/PortlandStateJavaSummer2020/</url>
+      <url>github:http://karanokara.github.io/PortlandStateJavaSummer2020/</url>
           
     </site>
       
