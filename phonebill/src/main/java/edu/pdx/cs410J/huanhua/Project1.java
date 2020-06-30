@@ -12,6 +12,7 @@ public class Project1 {
 			System.out.println(arg);
 			
 		}
+		
 		System.exit(1);
 	}
 	
