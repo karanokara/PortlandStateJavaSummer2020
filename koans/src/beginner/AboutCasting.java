@@ -1,6 +1,5 @@
 package beginner;
 
-import static com.sandwich.koan.constant.KoanConstants.__;
 import static com.sandwich.util.Assert.assertEquals;
 import static com.sandwich.util.Assert.fail;
 
@@ -64,45 +63,56 @@ public class AboutCasting {
 	@Koan
 	public void upcastWithInheritance() {
 		Child child = new Child();
-		Parent parentReference = child; // Why isn't there an explicit cast?
-		assertEquals(child instanceof Child, __);
-		assertEquals(parentReference instanceof Child, __);
-		assertEquals(parentReference instanceof Parent, __);
-		assertEquals(parentReference instanceof Grandparent, __);
+		Parent parent = new Parent();
+		Parent parentReference = child; // Why isn't there an explicit cast? this is an upcast, child class -> parent class
+		assertEquals(child instanceof Child, true);
+		assertEquals(child instanceof Parent, true);
+		assertEquals(child instanceof Grandparent, true);
+		assertEquals(parent instanceof Child, false);
+		assertEquals(parent instanceof Parent, true);
+		assertEquals(parent instanceof Grandparent, true);
+		assertEquals(parentReference instanceof Child, true);		// parentReference was child before
+		assertEquals(parentReference instanceof Parent, true);
+		assertEquals(parentReference instanceof Grandparent, true);
 	}
 	
 	@Koan
 	public void upcastAndPolymorphism() {
 		Child child = new Child();
-		Parent parentReference = child;
+		Parent parentReference = child;		//  upcasting
+		
 		// If the result is unexpected, consider the difference between an instance and its reference
-		assertEquals(parentReference.complain(), __);
+		assertEquals(parentReference.complain(), "Are we there yet!!");		// calling child method
 	}
 	
 	@Koan
 	public void downcastWithInheritance() {
 		Grandparent child = new Child();
-		Parent parentReference = (Parent) child; // Why do we need an explicit cast here?
+		Parent parentReference = (Parent) child; // Why do we need an explicit cast here? downcast, grandparent -> parent
 		Child childReference = (Child) parentReference; // Or here?
-		assertEquals(childReference instanceof Child, __);
-		assertEquals(childReference instanceof Parent, __);
-		assertEquals(childReference instanceof Grandparent, __);
+		
+		assertEquals(childReference instanceof Child, true);
+		assertEquals(childReference instanceof Parent, true);
+		assertEquals(childReference instanceof Grandparent, true);
 	}
 	
 	@Koan
 	public void downcastAndPolymorphism() {
 		Grandparent child = new Child();
-		Parent parent = (Child) child;
+		Parent parent = (Child) child;		//  "child" is grandparent -> parent, downcasting
+		
 		// Think about the result. Did you expect that? Why?
 		// How is that different from above?
-		assertEquals(parent.complain(), __);
+		assertEquals(parent.complain(), "Are we there yet!!");		// calling child method of the same name
 	}
 	
 	@Koan
 	public void classCasting() {
 		try {
-			Object o = new Object();
-			((Sleepable) o).sleep(); // would this even compile without the cast?
+//			Object o = new Object();
+			Object o = new Grandparent();
+			((Sleepable) o).sleep(); 	// would this even compile without the cast? No, downcasting need explicit cast
+//			o.sleep();					// sleep() is undefined for the type Object
 		}
 		catch (ClassCastException x) {
 			fail("Object does not implement Sleepable, maybe one of the people classes do?");
@@ -112,8 +122,10 @@ public class AboutCasting {
 	@Koan
 	public void complicatedCast() {
 		Grandparent parent = new Parent();
+		
 		// How can we access the parent's ability to "complain" - if the reference is held as a superclass?
-		assertEquals("TPS reports don't even have a cover letter!", __);
+		// downcasting
+		assertEquals("TPS reports don't even have a cover letter!", ((Parent) parent).complain());
 	}
 	
 }
