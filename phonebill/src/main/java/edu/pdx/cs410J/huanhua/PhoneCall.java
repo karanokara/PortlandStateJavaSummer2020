@@ -2,24 +2,47 @@ package edu.pdx.cs410J.huanhua;
 
 import edu.pdx.cs410J.AbstractPhoneCall;
 
+/**
+ * A PhoneCall is initiated by a person with a given phone number at a given time
+ * 
+ * 
+ * @author KANRA SU
+ *
+ */
 public class PhoneCall extends AbstractPhoneCall {
+	
+	private String callerPhoneNumber;
+	
+	private String calleePhoneNumber;
+	
+	private String startTime;
+	
+	private String endTime;
+	
+	public PhoneCall(String callerPhone, String calleePhone, String startTime, String endTime) {
+		this.callerPhoneNumber = callerPhone;
+		this.calleePhoneNumber = calleePhone;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+	
 	@Override
 	public String getCaller() {
-		throw new UnsupportedOperationException("This method is not implemented yet");
+		return this.calleePhoneNumber;
 	}
 	
 	@Override
 	public String getCallee() {
-		return "This method is not implemented yet";
+		return this.calleePhoneNumber;
 	}
 	
 	@Override
 	public String getStartTimeString() {
-		throw new UnsupportedOperationException("This method is not implemented yet");
+		return this.startTime;
 	}
 	
 	@Override
 	public String getEndTimeString() {
-		throw new UnsupportedOperationException("This method is not implemented yet");
+		return this.endTime;
 	}
 }
