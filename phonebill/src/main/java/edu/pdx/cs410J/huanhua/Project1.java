@@ -1,5 +1,11 @@
 package edu.pdx.cs410J.huanhua;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 /**
  * The main class for the CS410J Phone Bill Project
  * 
@@ -28,8 +34,23 @@ public class Project1 {
 		System.exit(1);
 	}
 	
+	public static String readFile(String filename) {
+		String line = "";
+		try {
+			InputStream readme = Project1.class.getResourceAsStream(filename);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
+			line = reader.readLine();
+			
+		}
+		catch (IOException e) {
+			line = e.getMessage();
+		}
+		
+		return line;
+	}
+	
 	public static void main(String[] args) {
-		String options[];
+		ArrayList<String> options = new ArrayList<String>();
 		int argc = 0;
 		
 		// 1. parses the command line
@@ -38,28 +59,24 @@ public class Project1 {
 			
 			if (arg.startsWith("-")) {
 				String option = arg.substring(1);
-				
-				switch (option) {
-					case "print":
-						
-						break;
-					case "README":
-						
-						break;
-					default:
-						throw new UnspportedOptionException("Using unsupported option: -" + option);
+				if (option.equals("README")) {
+					
+					System.out.println(readFile(("README.txt")));
+					System.exit(0);
+				}
+				else {
+					// add to option list
+					options.add(option);
 				}
 			}
 			else {
-				
 				++argc;
 			}
 		}
 		
 		
-		if (argc != 5) {
+		if (argc != 7) {
 			printErrorMessageAndExit("Missing command line arguments, need 5 arguement.");
-			
 			
 		}
 		
@@ -73,9 +90,17 @@ public class Project1 {
 		
 		
 		// 4. prints a description of the PhoneCall
+		for (int i = 0; i < options.size(); ++i) {
+			String option = options.get(i);
+			if (option.equals("print")) {
+				
+			}
+			else {
+				throw new UnspportedOptionException("Using unsupported option: -" + option);
+			}
+		}
 		
-		
-		System.exit(1);
+		System.exit(0);
 	}
 	
 }
