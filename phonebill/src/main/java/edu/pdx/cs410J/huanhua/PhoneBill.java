@@ -1,5 +1,6 @@
 package edu.pdx.cs410J.huanhua;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import edu.pdx.cs410J.AbstractPhoneBill;
@@ -16,10 +17,11 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
 	
 	private String customer;
 	
-	private Collection<PhoneCall> phoneCalls;
+	private Collection<PhoneCall> phoneCalls;		// Collection is an Interface, need an implemented class
 	
-	public PhoneBill(String customer, String times, String dates) {
-		
+	public PhoneBill(String customer) {
+		this.customer = customer;
+		this.phoneCalls = new ArrayList<PhoneCall>();
 	}
 	
 	/**

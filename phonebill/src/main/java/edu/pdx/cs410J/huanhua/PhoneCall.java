@@ -19,17 +19,25 @@ public class PhoneCall extends AbstractPhoneCall {
 	
 	private String endTime;
 	
-	public PhoneCall(String callerPhone, String calleePhone, String startTime, String endTime) {
+	public PhoneCall() {
+		
+	}
+	
+	public PhoneCall(String callerPhone, String calleePhone, String startTime, String endTime) throws IllegalArgumentException {
 		this.callerPhoneNumber = validatePhone(callerPhone);
 		this.calleePhoneNumber = validatePhone(calleePhone);
 		this.startTime = validateTime(startTime);
 		this.endTime = validateTime(endTime);
+		
+		if (this.callerPhoneNumber.equals(this.calleePhoneNumber)) {
+			throw new IllegalArgumentException("Caller phone number equals to callee phone number");
+		}
 	}
 	
 	
 	@Override
 	public String getCaller() {
-		return this.calleePhoneNumber;
+		return this.callerPhoneNumber;
 	}
 	
 	@Override

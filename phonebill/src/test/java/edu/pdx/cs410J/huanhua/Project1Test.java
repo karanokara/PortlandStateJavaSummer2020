@@ -75,13 +75,49 @@ public class Project1Test extends InvokeMainTestCase {
 	}
 	
 	@Test
-	public void projectOutputREADMEWithOption() {
+	public void projectOutputREADMEWithOption1() {
 		MainMethodResult result = invokeMain(Project1.class, "1", "2", "3", "4", "5", "-README");
 		assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
 		assertThat(result.getExitCode(), equalTo(0));
-		
-		
 	}
 	
+	@Test
+	public void projectOutputREADMEWithOption2() {
+		MainMethodResult result = invokeMain(Project1.class, "1", "2", "3", "-README", "4");
+		assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
+		assertThat(result.getExitCode(), equalTo(0));
+	}
+	
+	@Test
+	public void projectOutputREADMEWithOption3() {
+		MainMethodResult result = invokeMain(Project1.class, "-README", "4");
+		assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
+		assertThat(result.getExitCode(), equalTo(0));
+	}
+	
+	@Test
+	public void projectOutputREADMEWithOption4() {
+		MainMethodResult result = invokeMain(Project1.class, "-README");
+		assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
+		assertThat(result.getExitCode(), equalTo(0));
+	}
+	
+	
+	@Test
+	public void createPhoneBillWithPhoneCallMatchingToString() {
+		String name = "abc";
+		String option = "-print";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "1/15/2020";
+		String time1 = "19:35";
+		String date2 = "1/15/2020";
+		String time2 = "19:33";
+		
+		MainMethodResult result = invokeMain(Project1.class, name, option, phone1, phone2, date1, time1, date2, time2);
+		
+		assertThat(result.getTextWrittenToStandardOut(), containsString(name + "'s phone bill with " + 1 + " phone calls"));
+		assertThat(result.getExitCode(), equalTo(0));
+	}
 	
 }

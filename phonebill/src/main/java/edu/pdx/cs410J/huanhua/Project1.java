@@ -29,11 +29,22 @@ import java.util.ArrayList;
  */
 public class Project1 {
 	
+	/**
+	 * print an error msg and then exit
+	 * 
+	 * @param message
+	 */
 	private static void printErrorMessageAndExit(String message) {
 		System.err.println(message);
 		System.exit(1);
 	}
 	
+	/**
+	 * read file in project folder, and output file content
+	 * 
+	 * @param filename
+	 * @return file String
+	 */
 	public static String readFile(String filename) {
 		String line = "";
 		try {
@@ -52,10 +63,11 @@ public class Project1 {
 	public static void main(String[] args) {
 		ArrayList<String> options = new ArrayList<String>();
 		int argc = 0;
+		String arguments[] = new String[7];
 		
 		// 1. parses the command line
 		for (String arg : args) {
-			System.out.println(arg);
+//			System.out.println(arg);
 			
 			if (arg.startsWith("-")) {
 				String option = arg.substring(1);
@@ -70,6 +82,7 @@ public class Project1 {
 				}
 			}
 			else {
+				arguments[argc] = arg;
 				++argc;
 			}
 		}
@@ -81,19 +94,26 @@ public class Project1 {
 		}
 		
 		
-		// 2. creates an PhoneBill and a PhoneCall 
-//		PhoneBill bill = new PhoneBill(customer, times, dates);
-//		PhoneCall call = new PhoneCall();
+		// 2. creates an PhoneBill and a PhoneCall
+		String customer = arguments[0];
+		String callerNumber = arguments[1];
+		String calleeNumber = arguments[2];
+		String startDateTime = arguments[3] + " " + arguments[4];
+		String endDateTime = arguments[5] + " " + arguments[6];
+		
+		PhoneBill bill = new PhoneBill(customer);
+		PhoneCall call = new PhoneCall(callerNumber, calleeNumber, startDateTime, endDateTime);
 		
 		
 		// 3. adds the PhoneCall to the	PhoneBill
+		bill.addPhoneCall(call);
 		
 		
 		// 4. prints a description of the PhoneCall
 		for (int i = 0; i < options.size(); ++i) {
 			String option = options.get(i);
 			if (option.equals("print")) {
-				
+				System.out.println(bill.toString());
 			}
 			else {
 				throw new UnspportedOptionException("Using unsupported option: -" + option);
