@@ -34,23 +34,42 @@ public class PhoneCall extends AbstractPhoneCall {
 		}
 	}
 	
-	
+	/**
+	 * Returns the phone number of the person who originated this phone call.
+	 * 
+	 * @return String
+	 */
 	@Override
 	public String getCaller() {
 		return this.callerPhoneNumber;
 	}
 	
+	/**
+	 * Returns the phone number of the person who received this phone call.
+	 * 
+	 * @return String
+	 */
 	@Override
 	public String getCallee() {
 		return this.calleePhoneNumber;
 	}
 	
+	/**
+	 * Returns a textual representation of the time that this phone call was originated.
+	 * 
+	 * @return String
+	 */
 	@Override
 	public String getStartTimeString() {
 		return this.startTime;
 	}
 	
-	
+	/**
+	 * Returns a textual representation of the time that this phone call
+	 * was completed.
+	 * 
+	 * @return String
+	 */
 	@Override
 	public String getEndTimeString() {
 		return this.endTime;
@@ -61,6 +80,7 @@ public class PhoneCall extends AbstractPhoneCall {
 	 * 
 	 * @param phone
 	 * @return original phone number
+	 * @throws IllegalArgumentException
 	 */
 	private String validatePhone(String phone) throws IllegalArgumentException {
 		String phones[] = phone.split("-");
@@ -101,6 +121,7 @@ public class PhoneCall extends AbstractPhoneCall {
 	 * 
 	 * @param dateTime
 	 * @return original datatime
+	 * @throws IllegalArgumentException
 	 */
 	private String validateTime(String dateTime) throws IllegalArgumentException {
 		String dateTimeStr[] = dateTime.split(" ");

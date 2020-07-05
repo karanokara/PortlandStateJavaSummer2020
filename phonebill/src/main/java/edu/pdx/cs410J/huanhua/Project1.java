@@ -8,8 +8,10 @@ import java.util.ArrayList;
 /**
  * The main class for the CS410J Phone Bill Project
  * 
- * * this program should accept times and dates that have already occurred as well as
+ * this program should accept times and dates that have already occurred as well as
  * ones that occur in the future.
+ * 
+ * Goals: Extend classes that you did not write and perform more complex command line parsing
  * 
  */
 public class Project1 {
@@ -28,6 +30,7 @@ public class Project1 {
 	 * read file in project folder, and output file content
 	 * 
 	 * @param filename
+	 *            The filename
 	 * @return file String
 	 */
 	public static String readFile(String filename) {
@@ -35,8 +38,11 @@ public class Project1 {
 		try {
 			InputStream readme = Project1.class.getResourceAsStream(filename);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
-			line = reader.readLine();
-			
+			String l = reader.readLine();
+			while (l != null) {
+				line += l + "\n";
+				l = reader.readLine();
+			}
 		}
 		catch (Exception e) {
 			line = e.getMessage();
@@ -50,6 +56,9 @@ public class Project1 {
 	 * <code>PhoneBill</code>, add a <code>PhoneCall</code>
 	 * then prints a description of the phone bill
 	 * standard out by invoking its <code>toString</code> method.
+	 * 
+	 * @param args
+	 *            The arguments
 	 */
 	public static void main(String[] args) {
 		ArrayList<String> options = new ArrayList<String>();

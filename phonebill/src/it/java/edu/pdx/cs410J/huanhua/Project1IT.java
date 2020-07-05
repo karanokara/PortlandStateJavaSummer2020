@@ -13,6 +13,10 @@ import edu.pdx.cs410J.InvokeMainTestCase;
  */
 public class Project1IT extends InvokeMainTestCase {
 	
+	private static final String THIS_IS_A_README_FILE = "This is a PhoneBill project";
+	private static final String MISSING_COMMAND_LINE_ARGUMENTS = "Missing command line arguments, need 7 arguement.";
+	
+	
 	/**
 	 * Invokes the main method of {@link Project1} with the given arguments.
 	 */
@@ -27,7 +31,7 @@ public class Project1IT extends InvokeMainTestCase {
 	public void testNoCommandLineArguments() {
 		MainMethodResult result = invokeMain();
 		assertThat(result.getExitCode(), equalTo(1));
-		assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
+		assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_COMMAND_LINE_ARGUMENTS));
 	}
 	
 	
@@ -36,42 +40,42 @@ public class Project1IT extends InvokeMainTestCase {
 	@Test
 	public void invokingMainWith1argHasError() {
 		MainMethodResult result = invokeMain(Project1.class, "1");
-		assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
+		assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_COMMAND_LINE_ARGUMENTS));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 	
 	@Test
 	public void invokingMainWith2argHasError() {
 		MainMethodResult result = invokeMain(Project1.class, "1", "2");
-		assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
+		assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_COMMAND_LINE_ARGUMENTS));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 	
 	@Test
 	public void invokingMainWith3argHasError() {
 		MainMethodResult result = invokeMain(Project1.class, "1", "2", "3");
-		assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
+		assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_COMMAND_LINE_ARGUMENTS));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 	
 	@Test
 	public void invokingMainWith4argHasError() {
 		MainMethodResult result = invokeMain(Project1.class, "1", "2", "3", "4");
-		assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
+		assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_COMMAND_LINE_ARGUMENTS));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 	
 	@Test
 	public void invokingMainWith5argHasError() {
 		MainMethodResult result = invokeMain(Project1.class, "1", "2", "3", "4", "5");
-		assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
+		assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_COMMAND_LINE_ARGUMENTS));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 	
 	@Test
 	public void invokingMainWith6argHasError() {
 		MainMethodResult result = invokeMain(Project1.class, "1", "2", "3", "4", "5", "6");
-		assertThat(result.getTextWrittenToStandardError(), containsString("Missing command line arguments"));
+		assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_COMMAND_LINE_ARGUMENTS));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 	
@@ -166,28 +170,28 @@ public class Project1IT extends InvokeMainTestCase {
 	@Test
 	public void projectOutputREADMEWithOption1() {
 		MainMethodResult result = invokeMain(Project1.class, "1", "2", "3", "4", "5", "-README");
-		assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
+		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
 		assertThat(result.getExitCode(), equalTo(0));
 	}
 	
 	@Test
 	public void projectOutputREADMEWithOption2() {
 		MainMethodResult result = invokeMain(Project1.class, "1", "2", "3", "-README", "4");
-		assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
+		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
 		assertThat(result.getExitCode(), equalTo(0));
 	}
 	
 	@Test
 	public void projectOutputREADMEWithOption3() {
 		MainMethodResult result = invokeMain(Project1.class, "-README", "4");
-		assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
+		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
 		assertThat(result.getExitCode(), equalTo(0));
 	}
 	
 	@Test
 	public void projectOutputREADMEWithOption4() {
 		MainMethodResult result = invokeMain(Project1.class, "-README");
-		assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
+		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
 		assertThat(result.getExitCode(), equalTo(0));
 	}
 	
@@ -204,7 +208,7 @@ public class Project1IT extends InvokeMainTestCase {
 		String time2 = "19:33";
 		
 		MainMethodResult result = invokeMain(Project1.class, name, option2, phone1, phone2, date1, time1, date2, time2, option1);
-		assertThat(result.getTextWrittenToStandardOut(), containsString("This is a README file!"));
+		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
 		assertThat(result.getExitCode(), equalTo(0));
 	}
 	

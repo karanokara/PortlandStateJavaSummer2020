@@ -6,9 +6,8 @@ import java.util.Collection;
 import edu.pdx.cs410J.AbstractPhoneBill;
 
 /**
- * Project#1
+ * A PhoneBill has a customer name and consists of multiple PhoneCalls.
  * 
- * Goals: Extend classes that you did not write and perform more complex command line parsing
  * 
  * @author KANRA SU
  *
@@ -30,6 +29,8 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
 	
 	/**
 	 * Returns the name of the customer whose phone bill this is
+	 * 
+	 * @return String
 	 */
 	@Override
 	public String getCustomer() {
@@ -38,6 +39,9 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
 	
 	/**
 	 * Adds a phone call to this phone bill
+	 * 
+	 * @param call
+	 *            A PhoneCall obj
 	 */
 	@Override
 	public void addPhoneCall(PhoneCall call) {

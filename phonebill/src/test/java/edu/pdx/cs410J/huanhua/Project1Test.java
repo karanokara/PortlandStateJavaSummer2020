@@ -22,13 +22,15 @@ import edu.pdx.cs410J.InvokeMainTestCase;
  */
 public class Project1Test extends InvokeMainTestCase {
 	
+	private static final String THIS_IS_A_README_FILE = "This is a PhoneBill project";
+	
 	@Test
 	public void readmeCanBeReadAsResource() throws IOException {
 		try (InputStream readme = Project1.class.getResourceAsStream("README.txt");) {
 			assertThat(readme, not(nullValue()));
 			BufferedReader reader = new BufferedReader(new InputStreamReader(readme));
 			String line = reader.readLine();
-			assertThat(line, containsString("This is a README file!"));
+			assertThat(line, containsString(THIS_IS_A_README_FILE));
 		}
 	}
 	
@@ -37,7 +39,7 @@ public class Project1Test extends InvokeMainTestCase {
 	public void testReadFileWithExistFile() {
 		
 		String line = Project1.readFile("README.txt");
-		assertThat(line, containsString("This is a README file!"));
+		assertThat(line, containsString(THIS_IS_A_README_FILE));
 	}
 	
 	@Test

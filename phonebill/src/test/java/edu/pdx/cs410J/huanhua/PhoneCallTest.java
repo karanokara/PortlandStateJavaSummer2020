@@ -170,6 +170,12 @@ public class PhoneCallTest {
 		new PhoneCall("111-111-1112", "111-111-1111", date, "1/15/2020 19:39");
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void illegalDateThrowException16() {
+		String date = "12/1/2020 00:60";
+		
+		new PhoneCall("111-111-1112", "111-111-1111", date, "1/15/2020 19:39");
+	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void callerPhoneEqualToCalleePhoneException() {
