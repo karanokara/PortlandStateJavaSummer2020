@@ -13,6 +13,18 @@ import org.junit.Test;
  */
 public class PhoneBillTest {
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void phoneBillCreateWithNullCustomerNameThrowsException() {
+		new PhoneBill(null);
+		
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void phoneBillCreateWithEmptyCustomerNameThrowsException() {
+		new PhoneBill("");
+		
+	}
+	
 	@Test
 	public void getCustomerNameMatching() {
 		String name = "abc";
@@ -25,7 +37,7 @@ public class PhoneBillTest {
 	@Test
 	public void addOnePhoneCallGetOnePhoneCall() {
 		PhoneCall call1 = new PhoneCall();
-		PhoneBill bill = new PhoneBill("");
+		PhoneBill bill = new PhoneBill("a");
 		bill.addPhoneCall(call1);
 		
 		assertThat(bill.getPhoneCalls().size(), equalTo(1));
@@ -54,4 +66,6 @@ public class PhoneBillTest {
 		assertThat(bill.toString(), containsString(name + "'s phone bill with " + 2 + " phone calls"));
 		
 	}
+	
+	
 }

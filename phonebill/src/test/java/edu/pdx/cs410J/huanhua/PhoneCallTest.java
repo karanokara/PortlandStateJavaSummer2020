@@ -14,6 +14,8 @@ import org.junit.Test;
  */
 public class PhoneCallTest {
 	
+	// ------------------------------- Error Tests ------------------------------------- //
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void illegalPhoneNumberThrowException1() {
 		String phone = "11";
@@ -59,6 +61,13 @@ public class PhoneCallTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void illegalPhoneNumberThrowException7() {
 		String phone = "111-22a-1111";
+		
+		new PhoneCall("111-111-1111", phone, "1/15/2020 19:35", "1/15/2020 19:39");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void illegalPhoneNumberThrowException8() {
+		String phone = "11-222-1111";
 		
 		new PhoneCall("111-111-1111", phone, "1/15/2020 19:35", "1/15/2020 19:39");
 	}
@@ -147,6 +156,29 @@ public class PhoneCallTest {
 		new PhoneCall("111-111-1112", "111-111-1111", date, "1/15/2020 19:39");
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void illegalDateThrowException14() {
+		String date = "12/31/2020 25:12";
+		
+		new PhoneCall("111-111-1112", "111-111-1111", date, "1/15/2020 19:39");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void illegalDateThrowException15() {
+		String date = "12/0/2020 00:60";
+		
+		new PhoneCall("111-111-1112", "111-111-1111", date, "1/15/2020 19:39");
+	}
+	
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void callerPhoneEqualToCalleePhoneException() {
+		new PhoneCall("111-111-1111", "111-111-1111", "1/15/2020 19:39", "1/15/2020 19:39");
+	}
+	
+	
+	// ------------------------------- Error Tests ------------------------------------- //
+	
 	@Test
 	public void getCallerMatching() {
 		String phone = "111-111-1111";
@@ -187,11 +219,6 @@ public class PhoneCallTest {
 	public void forProject1ItIsOkayIfGetStartTimeReturnsNull() {
 		PhoneCall call = new PhoneCall();
 		assertThat(call.getStartTime(), is(nullValue()));
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void callerPhoneIsNotEqualToCalleePhone() {
-		new PhoneCall("111-111-1111", "111-111-1111", "1/15/2020 19:39", "1/15/2020 19:39");
 	}
 	
 	
