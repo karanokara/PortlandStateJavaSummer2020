@@ -14,7 +14,7 @@ import edu.pdx.cs410J.InvokeMainTestCase;
 public class Project1IT extends InvokeMainTestCase {
 	
 	private static final String THIS_IS_A_README_FILE = "This is a PhoneBill project";
-	private static final String MISSING_COMMAND_LINE_ARGUMENTS = "Missing command line arguments, need 7 arguement.";
+	private static final String MISSING_COMMAND_LINE_ARGUMENTS = "Missing command line arguments, need 7 arguements.";
 	
 	
 	/**
@@ -76,6 +76,13 @@ public class Project1IT extends InvokeMainTestCase {
 	public void invokingMainWith6argHasError() {
 		MainMethodResult result = invokeMain(Project1.class, "1", "2", "3", "4", "5", "6");
 		assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_COMMAND_LINE_ARGUMENTS));
+		assertThat(result.getExitCode(), equalTo(1));
+	}
+	
+	@Test
+	public void invokingMainWith8argHasError() {
+		MainMethodResult result = invokeMain(Project1.class, "1", "2", "3", "4", "5", "6", "7", "8");
+		assertThat(result.getTextWrittenToStandardError(), containsString("Too much arguments, need 7 arguements."));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 	

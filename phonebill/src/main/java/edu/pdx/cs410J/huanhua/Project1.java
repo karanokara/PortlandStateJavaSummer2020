@@ -62,7 +62,7 @@ public class Project1 {
 	 */
 	public static void main(String[] args) {
 		ArrayList<String> options = new ArrayList<String>();
-		int argc = 0;
+		int argc = -1;
 		String arguments[] = new String[7];
 		
 		// 1. parses the command line
@@ -82,14 +82,20 @@ public class Project1 {
 				}
 			}
 			else {
-				arguments[argc] = arg;
 				++argc;
+				
+				if (argc >= 7) {
+					printErrorMessageAndExit("Too much arguments, need 7 arguements.");
+					
+				}
+				
+				arguments[argc] = arg;
 			}
 		}
 		
 		
-		if (argc != 7) {
-			printErrorMessageAndExit("Missing command line arguments, need 7 arguement.");
+		if (argc != 6) {
+			printErrorMessageAndExit("Missing command line arguments, need 7 arguements.");
 			
 		}
 		
