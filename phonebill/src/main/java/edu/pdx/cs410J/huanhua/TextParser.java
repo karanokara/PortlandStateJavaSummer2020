@@ -19,6 +19,12 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
 	
 	private String filename;
 	
+	/**
+	 * Create a TextParser by passing a filename to parse
+	 * 
+	 * @param filename
+	 * @throws IllegalArgumentException
+	 */
 	public TextParser(String filename) throws IllegalArgumentException {
 		if (filename == null || filename.isEmpty()) {
 			throw new IllegalArgumentException("Filename is invalid in text parser");

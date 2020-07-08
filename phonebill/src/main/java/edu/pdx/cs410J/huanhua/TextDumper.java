@@ -57,8 +57,6 @@ public class TextDumper implements PhoneBillDumper<PhoneBill> {
 		}
 		
 		pw.close();
-		
-		
 	}
 	
 }
