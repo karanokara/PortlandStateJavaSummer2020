@@ -18,10 +18,27 @@ public class TextDumper implements PhoneBillDumper<PhoneBill> {
 	
 	private String filename;
 	
-	public TextDumper(String filename) {
+	/**
+	 * create a TextDumper with a filename
+	 * 
+	 * @param filename
+	 * @throws IllegalArgumentException
+	 */
+	public TextDumper(String filename) throws IllegalArgumentException {
+		if (filename == null || filename.isEmpty()) {
+			throw new IllegalArgumentException("Filename is invalid in text dumper");
+		}
+		
 		this.filename = filename;
 	}
 	
+	/**
+	 * Dumps a phone bill to some destination.
+	 * 
+	 * @param bill
+	 *            PhoneBill
+	 * @throws IOException
+	 */
 	@Override
 	public void dump(PhoneBill bill) throws IOException {
 		File file = new File(filename);

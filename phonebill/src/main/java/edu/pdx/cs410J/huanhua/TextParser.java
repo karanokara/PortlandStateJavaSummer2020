@@ -19,10 +19,19 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
 	
 	private String filename;
 	
-	public TextParser(String filename) {
+	public TextParser(String filename) throws IllegalArgumentException {
+		if (filename == null || filename.isEmpty()) {
+			throw new IllegalArgumentException("Filename is invalid in text parser");
+		}
+		
 		this.filename = filename;
 	}
 	
+	/**
+	 * Parses some source and returns a phone bill
+	 * 
+	 * @throws ParserException
+	 */
 	@Override
 	public PhoneBill parse() throws ParserException {
 		FileReader fr = null;
@@ -42,17 +51,33 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
 			br = new BufferedReader(fr);
 			
 			String line = br.readLine();
+			
+			if (line != null) {
+				bill = new PhoneBill(line);
+			}
+			
+			line = br.readLine();
+			
 			while (line != null) {
-				
-				line = br.readLine();
-				if (line != null) {
-					// end of stream
+				String callParams[] = line.split("\\.\\.\\.");
+				if (callParams.length != 4) {
+					throw new IllegalArgumentException("Need 4 arguemnts to create a PhoneCall");
 				}
 				
+				PhoneCall call = new PhoneCall(callParams[0], callParams[1], callParams[2], callParams[3]);
+				bill.addPhoneCall(call);
+				
+				line = br.readLine();
+				while (line != null && line.isEmpty()) {
+					line = br.readLine();
+				}
 			}
 		}
 		catch (IOException e) {
-			throw new ParserException("Error on reading file content");
+			throw new ParserException("Error on reading file content: " + e.getMessage());
+		}
+		catch (IllegalArgumentException e) {
+			throw new ParserException("Error on parsing file content: " + e.getMessage());
 		}
 		finally {
 			// closing 
@@ -67,7 +92,7 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
 		}
 		
 		
-		return null;
+		return bill;
 	}
 	
 }

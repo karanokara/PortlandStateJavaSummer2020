@@ -35,6 +35,33 @@ public class TextDumperTest {
 		return re;
 	}
 	
+	// ------------------------------- Error Tests ------------------------------------- //
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void filenameEmptyThrowsException() throws IllegalArgumentException {
+		new TextDumper("");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void filenameNullThrowsException() throws IllegalArgumentException {
+		new TextDumper(null);
+	}
+	
+	
+	@Test(expected = IOException.class)
+	public void filenameIsFolderThrowsException() throws IOException {
+		String filename = "target";
+		String name = "aaa";
+		
+		PhoneBill bill = new PhoneBill(name);
+		TextDumper dumper = new TextDumper(filename);
+		
+		// dump
+		dumper.dump(bill);
+	}
+	
+	// ------------------------------- Success Tests ------------------------------------- //
+	
 	@Test
 	public void dumpPhoneBillTextMatching() throws IOException {
 		String filename = "test.txt";
@@ -49,16 +76,12 @@ public class TextDumperTest {
 		
 		TextDumper dumper = new TextDumper(filename);
 		
-		
 		// dump
 		dumper.dump(bill);
-		
 		
 		String result = fileReader(filename);
 		assertThat(result, containsString("aaa\n" +
 				"111-111-1111...111-111-1112...1/15/2020 19:35...1/15/2020 19:39"));
-		
-		
 	}
 	
 	
