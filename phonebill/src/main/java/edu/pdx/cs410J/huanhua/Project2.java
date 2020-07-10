@@ -3,7 +3,9 @@ package edu.pdx.cs410J.huanhua;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * The main class for the CS410J Phone Bill Project
@@ -22,7 +24,7 @@ public class Project2 {
 	 * @param message
 	 */
 	private static void printErrorMessageAndExit(String message) {
-		System.err.println(message);
+		System.err.println("Error: " + message);
 		System.exit(1);
 	}
 	
@@ -60,13 +62,18 @@ public class Project2 {
 	 *            The arguments
 	 */
 	public static void main(String[] args) {
-		ArrayList<String> options = new ArrayList<String>();
+		LinkedList<String> options = new LinkedList<String>();
 		int argc = -1;
 		String arguments[] = new String[7];
+		String supportOptions[] = {};
+		List<String> supportOptionslist = Arrays.asList(supportOptions);
+		String textFilename = "";	// for storing -textFile "file"
+		PhoneBill bill = null;
 		
-		// 1. parses the command line
-		for (String arg : args) {
+		// 1. parse the command line
+		for (int i = 0; i < args.length; ++i) {
 //			System.out.println(arg);
+			String arg = args[i];
 			
 			if (arg.startsWith("-")) {
 				String option = arg.substring(1);
@@ -75,9 +82,21 @@ public class Project2 {
 					System.out.println(readFile(("README.txt")));
 					System.exit(0);
 				}
-				else {
+				else if (option.equals("textFile")) {
+					textFilename = args[++i];
+					
+					if (textFilename.startsWith("-") || textFilename.isEmpty()) {
+						printErrorMessageAndExit("Need a filename for using text file for phone bill.");
+					}
+					
+					options.addFirst(option);
+				}
+				else if (supportOptionslist.contains(option)) {
 					// add to option list
 					options.add(option);
+				}
+				else {
+					printErrorMessageAndExit("Using unsupported option: -" + option);
 				}
 			}
 			else {
@@ -99,46 +118,80 @@ public class Project2 {
 		}
 		
 		
-		String customer = arguments[0];
-		String callerNumber = arguments[1];
-		String calleeNumber = arguments[2];
-		String startDateTime = arguments[3] + " " + arguments[4];
-		String endDateTime = arguments[5] + " " + arguments[6];
-		PhoneBill bill = null;
-		PhoneCall call = null;
-		
-		// 2. creates an PhoneBill and a PhoneCall
-		try {
-			bill = new PhoneBill(customer);
-			call = new PhoneCall(callerNumber, calleeNumber, startDateTime, endDateTime);
-			
-		}
-		catch (IllegalArgumentException e) {
-			printErrorMessageAndExit(e.getMessage());
-		}
-		
-		// 3. adds the PhoneCall to the	PhoneBill
-		bill.addPhoneCall(call);
-		
-		
 		// 4. prints a description of the PhoneCall
-		try {
-			for (int i = 0; i < options.size(); ++i) {
-				String option = options.get(i);
-				if (option.equals("print")) {
-					System.out.println(bill.toString());
+		for (int i = 0; i < options.size(); ++i) {
+			String option = options.get(i);
+			
+			if (option.equals("textFile")) {
+				try {
+					// read the file into phone bill
+					TextParser parser = new TextParser(textFilename);
+					bill = parser.parse();
+					
+					if (bill == null) {
+						System.out.println("Text file \"" + textFilename + "\" couldn't find, creating a new Phone Bill...");
+						bill = createPhoneBillWithArguments(arguments);
+					}
+					else {
+						System.out.println("Succeed to import text file \"" + textFilename + "\", inserting the new Phone Call...");
+						// save the new phone call into bill
+						PhoneCall call = createPhoneCallWithArguments(arguments);
+						bill.addPhoneCall(call);
+					}
+					
+					// save the updated phone bill into file
+					System.out.println("Dumping Phone Bill into text file \"" + textFilename + "\"...");
+					TextDumper dumper = new TextDumper(textFilename);
+					dumper.dump(bill);
+					System.out.println("Done!");
 				}
-				else {
-					throw new UnSupportedOptionException("Using unsupported option: -" + option);
+				catch (Exception e) {
+					printErrorMessageAndExit(e.getMessage());
 				}
 			}
+			else if (option.equals("print")) {
+				if (bill == null) {
+					try {
+						bill = createPhoneBillWithArguments(arguments);
+					}
+					catch (IllegalArgumentException e) {
+						printErrorMessageAndExit(e.getMessage());
+					}
+				}
+				
+				System.out.println("Phone Bill: \n");
+				System.out.println(bill.toString());
+				
+			}
+			
 		}
-		catch (UnSupportedOptionException e) {
-			printErrorMessageAndExit(e.getMessage());
-		}
-		
 		
 		System.exit(0);
 	}
 	
+	public static PhoneBill createPhoneBillWithArguments(String arguments[]) throws IllegalArgumentException {
+		String customer = arguments[0];
+		
+		// 2.1. creates a PhoneBill
+		PhoneBill bill = new PhoneBill(customer);
+		
+		
+		// 3. adds the PhoneCall to the	PhoneBill
+		bill.addPhoneCall(createPhoneCallWithArguments(arguments));
+		
+		return bill;
+	}
+	
+	
+	public static PhoneCall createPhoneCallWithArguments(String arguments[]) throws IllegalArgumentException {
+		String callerNumber = arguments[1];
+		String calleeNumber = arguments[2];
+		String startDateTime = arguments[3] + " " + arguments[4];
+		String endDateTime = arguments[5] + " " + arguments[6];
+		
+		// 2.2 creates a PhoneCall
+		PhoneCall call = new PhoneCall(callerNumber, calleeNumber, startDateTime, endDateTime);
+		
+		return call;
+	}
 }

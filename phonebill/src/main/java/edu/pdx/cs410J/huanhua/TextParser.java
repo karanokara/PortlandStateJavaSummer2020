@@ -48,7 +48,9 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
 			fr = new FileReader(file);
 		}
 		catch (FileNotFoundException e) {
-			throw new ParserException("Error on finding target file to read");
+//			throw new ParserException("Error on finding target file to read");
+			// file doesn't exist, return null
+			return bill;
 		}
 		
 		BufferedReader br = null;
