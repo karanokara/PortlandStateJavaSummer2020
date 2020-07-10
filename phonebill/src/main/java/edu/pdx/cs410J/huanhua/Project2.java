@@ -65,7 +65,7 @@ public class Project2 {
 		LinkedList<String> options = new LinkedList<String>();
 		int argc = -1;
 		String arguments[] = new String[7];
-		String supportOptions[] = {};
+		String supportOptions[] = { "print", "textFile", "README" };
 		List<String> supportOptionslist = Arrays.asList(supportOptions);
 		String textFilename = "";	// for storing -textFile "file"
 		PhoneBill bill = null;
@@ -79,7 +79,7 @@ public class Project2 {
 				String option = arg.substring(1);
 				if (option.equals("README")) {
 					
-					System.out.println(readFile(("README.txt")));
+					System.out.println(readFile(("README2.txt")));
 					System.exit(0);
 				}
 				else if (option.equals("textFile")) {
@@ -133,10 +133,19 @@ public class Project2 {
 						bill = createPhoneBillWithArguments(arguments);
 					}
 					else {
-						System.out.println("Succeed to import text file \"" + textFilename + "\", inserting the new Phone Call...");
-						// save the new phone call into bill
-						PhoneCall call = createPhoneCallWithArguments(arguments);
-						bill.addPhoneCall(call);
+						System.out.println("Succeed to import text file \"" + textFilename + "\".");
+						
+						if (bill.getCustomer().equals(arguments[0])) {
+							System.out.println("Inserting the new Phone Call...");
+							
+							// save the new phone call into bill
+							PhoneCall call = createPhoneCallWithArguments(arguments);
+							bill.addPhoneCall(call);
+						}
+						else {
+							printErrorMessageAndExit(
+									"File customer's name \"" + bill.getCustomer() + "\" doesn't match argument customer's name \"" + arguments[0] + "\".");
+						}
 					}
 					
 					// save the updated phone bill into file

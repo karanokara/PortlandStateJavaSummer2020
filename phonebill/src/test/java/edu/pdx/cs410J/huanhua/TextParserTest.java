@@ -19,7 +19,7 @@ import edu.pdx.cs410J.ParserException;
  */
 public class TextParserTest {
 	
-	private void fileWriter(String content) throws FileNotFoundException {
+	public static void fileWriter(String content) throws FileNotFoundException {
 		File file = new File("temp.txt");
 		file.deleteOnExit();
 		
