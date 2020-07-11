@@ -169,7 +169,6 @@ public class Project1IT extends InvokeMainTestCase {
 		MainMethodResult result = invokeMain(Project1.class, name, phone1, phone2, option2, date1, time1, date2, time2);
 		assertThat(result.getTextWrittenToStandardError(), containsString("Customer name is invalid"));
 		assertThat(result.getExitCode(), equalTo(1));
-		
 	}
 	
 	// ------------------------------- Success Tests ------------------------------------- //

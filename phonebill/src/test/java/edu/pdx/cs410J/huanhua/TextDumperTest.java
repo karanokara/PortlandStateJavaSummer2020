@@ -82,6 +82,9 @@ public class TextDumperTest {
 		String result = fileReader(filename);
 		assertThat(result, containsString("aaa\n" +
 				"111-111-1111...111-111-1112...1/15/2020 19:35...1/15/2020 19:39"));
+		
+		File toDeleteFile = new File(filename);
+		toDeleteFile.delete();
 	}
 	
 	

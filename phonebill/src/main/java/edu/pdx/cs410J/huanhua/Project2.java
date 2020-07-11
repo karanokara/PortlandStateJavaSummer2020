@@ -18,15 +18,15 @@ import java.util.List;
  */
 public class Project2 {
 	
-	/**
-	 * print an error msg and then exit
-	 * 
-	 * @param message
-	 */
-	private static void printErrorMessageAndExit(String message) {
-		System.err.println("Error: " + message);
-		System.exit(1);
-	}
+//	/**
+//	 * print an error msg and then exit
+//	 * 
+//	 * @param message
+//	 */
+//	private static void printErrorMessageAndExit(String message) {
+//		System.err.println("Error: " + message);
+//		System.exit(1);
+//	}
 	
 	/**
 	 * read file in project folder, and output file content
@@ -63,15 +63,16 @@ public class Project2 {
 	 */
 	public static void main(String[] args) {
 		LinkedList<String> options = new LinkedList<String>();
-		int argc = -1;
 		String arguments[] = new String[7];
 		String supportOptions[] = { "print", "textFile", "README" };
 		List<String> supportOptionslist = Arrays.asList(supportOptions);
 		String textFilename = "";	// for storing -textFile "file"
 		PhoneBill bill = null;
+		int argc = -1;
+		int passArgc = args.length;
 		
 		// 1. parse the command line
-		for (int i = 0; i < args.length; ++i) {
+		for (int i = 0; i < passArgc; ++i) {
 //			System.out.println(arg);
 			String arg = args[i];
 			
@@ -83,10 +84,11 @@ public class Project2 {
 					System.exit(0);
 				}
 				else if (option.equals("textFile")) {
-					textFilename = args[++i];
+					textFilename = args[(++i >= passArgc) ? (i - 1) : i];
 					
 					if (textFilename.startsWith("-") || textFilename.isEmpty()) {
-						printErrorMessageAndExit("Need a filename for using text file for phone bill.");
+						System.err.println("Error: " + "Need a filename for using text file for phone bill.");
+						System.exit(1);
 					}
 					
 					options.addFirst(option);
@@ -96,15 +98,17 @@ public class Project2 {
 					options.add(option);
 				}
 				else {
-					printErrorMessageAndExit("Using unsupported option: -" + option);
+					System.err.println("Error: " + "Using unsupported option: -" + option);
+					System.exit(1);
+					
 				}
 			}
 			else {
 				++argc;
 				
 				if (argc >= 7) {
-					printErrorMessageAndExit("Too much arguments, need 7 arguements.");
-					
+					System.err.println("Error: " + "Too much arguments, need 7 arguements.");
+					System.exit(1);
 				}
 				
 				arguments[argc] = arg;
@@ -113,8 +117,8 @@ public class Project2 {
 		
 		
 		if (argc != 6) {
-			printErrorMessageAndExit("Missing command line arguments, need 7 arguements.");
-			
+			System.err.println("Error: " + "Missing command line arguments, need 7 arguements.");
+			System.exit(1);
 		}
 		
 		
@@ -133,7 +137,7 @@ public class Project2 {
 						bill = createPhoneBillWithArguments(arguments);
 					}
 					else {
-						System.out.println("Succeed to import text file \"" + textFilename + "\".");
+						System.out.println("Succeed to import text file \"" + textFilename + "\"");
 						
 						if (bill.getCustomer().equals(arguments[0])) {
 							System.out.println("Inserting the new Phone Call...");
@@ -143,8 +147,8 @@ public class Project2 {
 							bill.addPhoneCall(call);
 						}
 						else {
-							printErrorMessageAndExit(
-									"File customer's name \"" + bill.getCustomer() + "\" doesn't match argument customer's name \"" + arguments[0] + "\".");
+							System.err.println("Error: " + "File customer's name \"" + bill.getCustomer() + "\" doesn't match argument customer's name \"" + arguments[0] + "\".");
+							System.exit(1);
 						}
 					}
 					
@@ -155,16 +159,19 @@ public class Project2 {
 					System.out.println("Done!");
 				}
 				catch (Exception e) {
-					printErrorMessageAndExit(e.getMessage());
+					System.err.println("Error: " + e.getMessage());
+					System.exit(1);
 				}
 			}
-			else if (option.equals("print")) {
+//			else if (option.equals("print")) {
+			else {
 				if (bill == null) {
 					try {
 						bill = createPhoneBillWithArguments(arguments);
 					}
 					catch (IllegalArgumentException e) {
-						printErrorMessageAndExit(e.getMessage());
+						System.err.println("Error: " + e.getMessage());
+						System.exit(1);
 					}
 				}
 				
@@ -173,6 +180,17 @@ public class Project2 {
 				
 			}
 			
+		}
+		
+		// If nothing has performed, just validate the arguemnts
+		if (bill == null) {
+			try {
+				bill = createPhoneBillWithArguments(arguments);
+			}
+			catch (IllegalArgumentException e) {
+				System.err.println("Error: " + e.getMessage());
+				System.exit(1);
+			}
 		}
 		
 		System.exit(0);

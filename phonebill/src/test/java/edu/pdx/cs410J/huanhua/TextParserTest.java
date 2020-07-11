@@ -44,12 +44,13 @@ public class TextParserTest {
 	}
 	
 	
-	@Test(expected = ParserException.class)
-	public void fileNotFoundThrowsException() throws ParserException {
+	@Test
+	public void fileNotFoundReturnNull() throws ParserException {
 		String filename = "not.exist";
 		
 		TextParser parser = new TextParser(filename);
-		parser.parse();
+		PhoneBill bill = parser.parse();
+		assertThat(bill, is(nullValue()));
 	}
 	
 	@Test(expected = ParserException.class)
