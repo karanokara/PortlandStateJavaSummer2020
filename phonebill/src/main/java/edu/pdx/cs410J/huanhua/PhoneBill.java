@@ -1,7 +1,7 @@
 package edu.pdx.cs410J.huanhua;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 import edu.pdx.cs410J.AbstractPhoneBill;
 
@@ -24,7 +24,7 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
 		}
 		
 		this.customer = customer;
-		this.phoneCalls = new ArrayList<PhoneCall>();
+		this.phoneCalls = new LinkedList<PhoneCall>();
 	}
 	
 	/**

@@ -18,16 +18,6 @@ import java.util.List;
  */
 public class Project2 {
 	
-//	/**
-//	 * print an error msg and then exit
-//	 * 
-//	 * @param message
-//	 */
-//	private static void printErrorMessageAndExit(String message) {
-//		System.err.println("Error: " + message);
-//		System.exit(1);
-//	}
-	
 	/**
 	 * read file in project folder, and output file content
 	 * 
@@ -176,7 +166,7 @@ public class Project2 {
 				}
 				
 				System.out.println("Phone Bill: \n");
-				System.out.println(bill.toString());
+				System.out.println(((LinkedList<PhoneCall>) bill.getPhoneCalls()).getLast().toString());
 				
 			}
 			
