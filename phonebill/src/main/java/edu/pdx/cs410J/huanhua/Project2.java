@@ -54,8 +54,7 @@ public class Project2 {
 	public static void main(String[] args) {
 		LinkedList<String> options = new LinkedList<String>();
 		String arguments[] = new String[7];
-		String supportOptions[] = { "print", "textFile", "README" };
-		List<String> supportOptionslist = Arrays.asList(supportOptions);
+		List<String> supportOptionslist = Arrays.asList("print", "textFile", "README");
 		String textFilename = "";	// for storing -textFile "file"
 		PhoneBill bill = null;
 		int argc = -1;
