@@ -37,6 +37,7 @@ public class TextParser implements PhoneBillParser<PhoneBill> {
 	 * Parses some source and returns a phone bill
 	 * 
 	 * @throws ParserException
+	 * @return PhoneBill obj or null if no file found
 	 */
 	@Override
 	public PhoneBill parse() throws ParserException {

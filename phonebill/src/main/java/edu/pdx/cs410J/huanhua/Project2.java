@@ -185,6 +185,13 @@ public class Project2 {
 		System.exit(0);
 	}
 	
+	/**
+	 * Create a phone bill base on program arguments
+	 * 
+	 * @param arguments
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public static PhoneBill createPhoneBillWithArguments(String arguments[]) throws IllegalArgumentException {
 		String customer = arguments[0];
 		
@@ -198,7 +205,13 @@ public class Project2 {
 		return bill;
 	}
 	
-	
+	/**
+	 * Create a phone call base on program arguments
+	 * 
+	 * @param arguments
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public static PhoneCall createPhoneCallWithArguments(String arguments[]) throws IllegalArgumentException {
 		String callerNumber = arguments[1];
 		String calleeNumber = arguments[2];
