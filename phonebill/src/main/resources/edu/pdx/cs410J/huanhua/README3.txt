@@ -17,4 +17,4 @@ usage: Project3 [options] <args>
 		-print 			Prints a description of the new phone call
 		-README 		Prints a README for this project and exits
 		
-	Date and time should be in the format: mm/dd/yyyy hh:mm pm
+	Date and time should be in the format: 01/02/2020 9:16 pm

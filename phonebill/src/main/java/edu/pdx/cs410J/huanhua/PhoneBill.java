@@ -1,13 +1,13 @@
 package edu.pdx.cs410J.huanhua;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Comparator;
+import java.util.TreeSet;
 
 import edu.pdx.cs410J.AbstractPhoneBill;
 
 /**
  * A PhoneBill has a customer name and consists of multiple PhoneCalls.
- * 
  * 
  * @author KANRA SU
  *
@@ -18,13 +18,23 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
 	
 	private Collection<PhoneCall> phoneCalls;		// Collection is an Interface, need an implemented class
 	
+	// a comparator for comparing 2 PhoneCall
+	static class phoneCallComparator implements Comparator<PhoneCall> {
+		public int compare(PhoneCall o1, PhoneCall o2) {
+			// sort by large to small, latest to oldest
+			return o2.compareTo(o1);
+		}
+	}
+	
 	public PhoneBill(String customer) throws IllegalArgumentException {
 		if (customer == null || customer.isEmpty()) {
 			throw new IllegalArgumentException("Customer name is invalid");
 		}
 		
 		this.customer = customer;
-		this.phoneCalls = new LinkedList<PhoneCall>();
+		this.phoneCalls = new TreeSet<PhoneCall>(new phoneCallComparator());	// auto sort when adding
+		
+		// this.phoneCalls = new LinkedList<PhoneCall>();		// can add first or last, keep insertion order
 	}
 	
 	/**
@@ -39,7 +49,7 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
 	
 	/**
 	 * Adds a phone call to this phone bill
-	 * phone calls are sorted chronologically by their begin time
+	 * phone calls are sorted chronologically by their begin time + caller phone #
 	 * 
 	 * @param call
 	 *            A PhoneCall obj
