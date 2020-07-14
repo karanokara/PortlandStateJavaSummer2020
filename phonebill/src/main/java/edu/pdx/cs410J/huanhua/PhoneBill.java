@@ -39,6 +39,7 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
 	
 	/**
 	 * Adds a phone call to this phone bill
+	 * phone calls are sorted chronologically by their begin time
 	 * 
 	 * @param call
 	 *            A PhoneCall obj
