@@ -24,6 +24,7 @@ import edu.pdx.cs410J.PhoneBillDumper;
 public class PrettyPrinter implements PhoneBillDumper<PhoneBill> {
 	
 	private String filename;
+	
 	private final static String DATE_PATTERN = "MM/dd/yyyy h:mm a";
 	
 	/**
@@ -56,11 +57,13 @@ public class PrettyPrinter implements PhoneBillDumper<PhoneBill> {
 		PrintWriter pw = new PrintWriter(fw);
 		
 		String customer = bill.getCustomer();
-		pw.println(customer);
+		pw.println("Customer: " + customer + "\n");
 		
 		Collection<PhoneCall> calls = bill.getPhoneCalls();
 		
 		DateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN, Locale.US);
+		
+		pw.println("Total calls: " + calls.size() + "\n");
 		
 		for (PhoneCall call : calls) {
 			Date start = call.getStartTime();
@@ -69,25 +72,28 @@ public class PrettyPrinter implements PhoneBillDumper<PhoneBill> {
 			String startString = dateFormat.format(start);
 			String endString = dateFormat.format(end);
 			
-			pw.println("\n"
-					+ "Call from " + call.getCaller() + " to " + call.getCallee() + "\n"
-					+ "+ " + startString
-					+ "| " + duration + " minutes"
-					+ "| " + endString
-					+ "\n");
+			pw.println(""
+					+ "Called from " + call.getCaller() + " to " + call.getCallee() + "\n"
+					+ "         +- " + startString + "\n"
+					+ "         |  " + duration + " minutes" + "\n"
+					+ "         +- " + endString + "\n");
 		}
 		
 		pw.close();
 	}
 	
 	/**
+	 * Get the minute difference of two date
 	 * 
 	 * @param start
 	 * @param end
-	 * @return
+	 * @return minute difference
 	 */
 	public int getDurationInMinutes(Date start, Date end) {
-		return 0;
+		
+		int minuteDiff = (int) ((end.getTime() - start.getTime()) / (1000 * 60));
+		
+		return minuteDiff;
 	}
 	
 }
