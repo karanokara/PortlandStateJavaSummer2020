@@ -1,6 +1,7 @@
 package edu.pdx.cs410J.huanhua;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
@@ -54,10 +55,12 @@ public class Project3 {
 	 */
 	public static void main(String[] args) {
 		LinkedList<String> options = new LinkedList<String>();
-		String arguments[] = new String[7];
-		List<String> supportOptionslist = Arrays.asList("print", "textFile", "README");
+		String arguments[] = new String[9];
+		List<String> supportOptionslist = Arrays.asList("print", "textFile", "README", "pretty");
 		String textFilename = "";	// for storing -textFile "file"
+		String prettyFilename = "";	// for storing -pretty "file" or "-"
 		PhoneBill bill = null;
+		PhoneCall newCall = null;
 		int argc = -1;
 		int passArgc = args.length;
 		
@@ -83,6 +86,14 @@ public class Project3 {
 					
 					options.addFirst(option);
 				}
+				else if (option.equals("pretty")) {
+					prettyFilename = (++i >= passArgc) ? "" : args[i];
+					
+					if (textFilename.isEmpty()) {
+						System.err.println("Error: " + "Need a filename for pretty output or \"-\" for console output.");
+						System.exit(1);
+					}
+				}
 				else if (supportOptionslist.contains(option)) {
 					// add to option list
 					options.add(option);
@@ -90,14 +101,13 @@ public class Project3 {
 				else {
 					System.err.println("Error: " + "Using unsupported option: -" + option);
 					System.exit(1);
-					
 				}
 			}
 			else {
 				++argc;
 				
-				if (argc >= 7) {
-					System.err.println("Error: " + "Too much arguments, need 7 arguements.");
+				if (argc >= 9) {
+					System.err.println("Error: " + "Too much arguments, need only 9 arguements.");
 					System.exit(1);
 				}
 				
@@ -105,12 +115,10 @@ public class Project3 {
 			}
 		}
 		
-		
-		if (argc != 6) {
-			System.err.println("Error: " + "Missing command line arguments, need 7 arguements.");
+		if (argc != 8) {
+			System.err.println("Error: " + "Missing command line arguments, need 9 arguements.");
 			System.exit(1);
 		}
-		
 		
 		// 4. prints a description of the PhoneCall
 		for (int i = 0; i < options.size(); ++i) {
@@ -124,7 +132,7 @@ public class Project3 {
 					
 					if (bill == null) {
 						System.out.println("Text file \"" + textFilename + "\" couldn't find, creating a new Phone Bill...");
-						bill = createPhoneBillWithArguments(arguments);
+						bill = createPhoneBillWithArguments(arguments, null);
 					}
 					else {
 						System.out.println("Succeed to import text file \"" + textFilename + "\"");
@@ -153,11 +161,13 @@ public class Project3 {
 					System.exit(1);
 				}
 			}
-//			else if (option.equals("print")) {
+//			else if (option.equals("print" or "pretty")) {
 			else {
+				// no PhoneBill loaded from file
 				if (bill == null) {
 					try {
-						bill = createPhoneBillWithArguments(arguments);
+						newCall = createPhoneCallWithArguments(arguments);
+						bill = createPhoneBillWithArguments(arguments, newCall);
 					}
 					catch (IllegalArgumentException e) {
 						System.err.println("Error: " + e.getMessage());
@@ -165,17 +175,36 @@ public class Project3 {
 					}
 				}
 				
-				System.out.println("Phone Bill: \n");
-				System.out.println(((LinkedList<PhoneCall>) bill.getPhoneCalls()).getLast().toString());
-				
+				if (option.equals("pretty")) {
+					if (prettyFilename.equals("-")) {
+						// print to console
+						System.out.println(PrettyPrinter.constructPrettyOutput(bill));
+					}
+					else {
+						// print to file
+						try {
+							PrettyPrinter prettyPrinter = new PrettyPrinter(prettyFilename);
+							prettyPrinter.dump(bill);
+						}
+						catch (IOException e) {
+							System.err.println("Error: " + e.getMessage());
+							System.exit(1);
+						}
+					}
+				}
+				else {
+					// -print option
+					System.out.println("New Phone Call:");
+					System.out.println(newCall.toString());
+				}
 			}
 			
 		}
 		
-		// If nothing has performed, just validate the arguemnts
+		// If nothing has performed, just validate the arguments
 		if (bill == null) {
 			try {
-				bill = createPhoneBillWithArguments(arguments);
+				bill = createPhoneBillWithArguments(arguments, null);
 			}
 			catch (IllegalArgumentException e) {
 				System.err.println("Error: " + e.getMessage());
@@ -193,15 +222,17 @@ public class Project3 {
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	public static PhoneBill createPhoneBillWithArguments(String arguments[]) throws IllegalArgumentException {
+	public static PhoneBill createPhoneBillWithArguments(String arguments[], PhoneCall call) throws IllegalArgumentException {
 		String customer = arguments[0];
 		
 		// 2.1. creates a PhoneBill
 		PhoneBill bill = new PhoneBill(customer);
 		
-		
 		// 3. adds the PhoneCall to the	PhoneBill
-		bill.addPhoneCall(createPhoneCallWithArguments(arguments));
+		if (call == null)
+			bill.addPhoneCall(createPhoneCallWithArguments(arguments));
+		else
+			bill.addPhoneCall(call);
 		
 		return bill;
 	}
@@ -216,8 +247,8 @@ public class Project3 {
 	public static PhoneCall createPhoneCallWithArguments(String arguments[]) throws IllegalArgumentException {
 		String callerNumber = arguments[1];
 		String calleeNumber = arguments[2];
-		String startDateTime = arguments[3] + " " + arguments[4];
-		String endDateTime = arguments[5] + " " + arguments[6];
+		String startDateTime = arguments[3] + " " + arguments[4] + " " + arguments[5];
+		String endDateTime = arguments[6] + " " + arguments[7] + " " + arguments[8];
 		
 		// 2.2 creates a PhoneCall
 		PhoneCall call = new PhoneCall(callerNumber, calleeNumber, startDateTime, endDateTime);
@@ -225,3 +256,4 @@ public class Project3 {
 		return call;
 	}
 }
+

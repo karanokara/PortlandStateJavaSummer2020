@@ -57,7 +57,7 @@ public class TextParserTest {
 	public void fileFoundWrongFormatThrowsException1() throws ParserException, FileNotFoundException {
 		String filename = "temp.txt";
 		String content = "\n" +
-				"111-111-1111...111-111-1112...1/15/2020 19:35...1/15/2020 19:39";
+				"111-111-1111...111-111-1112...1/15/2020 12:35 am...1/15/2020 12:39 am";
 		
 		// write content
 		fileWriter(content);
@@ -70,7 +70,7 @@ public class TextParserTest {
 	public void fileFoundWrongFormatThrowsException2() throws ParserException, FileNotFoundException {
 		String filename = "temp.txt";
 		String content = "abc\n" +
-				"111-111-1113...111-111-1112...0/15/2020 19:35...1/15/2020 19:39";
+				"111-111-1113...111-111-1112...0/15/2020 19:35 am...1/15/2020 19:39 am";
 		
 		// write content
 		fileWriter(content);
@@ -83,7 +83,7 @@ public class TextParserTest {
 	public void fileFoundWrongFormatThrowsException3() throws ParserException, FileNotFoundException {
 		String filename = "temp.txt";
 		String content = "abc\n" +
-				"111-111-1113111-111-1112...0/15/2020 19:35...1/15/2020 19:39";
+				"111-111-1113111-111-1112...0/15/2020 19:35 am...1/15/2020 19:39 am";
 		
 		// write content
 		fileWriter(content);
@@ -104,7 +104,18 @@ public class TextParserTest {
 		parser.parse();
 	}
 	
-	
+	@Test(expected = ParserException.class)
+	public void fileFoundWrongFormatThrowsException5() throws ParserException, FileNotFoundException {
+		String filename = "temp.txt";
+		String content = "abc\n" +
+				"111-111-1113111-111-1112...0/15/2020 19:35am...1/15/2020 19:39 am";
+		
+		// write content
+		fileWriter(content);
+		
+		TextParser parser = new TextParser(filename);
+		parser.parse();
+	}
 	
 	
 	// ------------------------------- Success Tests ------------------------------------- //
@@ -139,7 +150,7 @@ public class TextParserTest {
 	public void fileExistFormatCorrectPassTest1Call() throws ParserException, FileNotFoundException {
 		String filename = "temp.txt";
 		String content = "abc\n" +
-				"111-111-1111...111-111-1112...1/15/2020 19:35...1/15/2020 19:39";
+				"111-111-1111...111-111-1112...1/15/2020 11:35 am...1/15/2020 11:39 am";
 		
 		// write content
 		fileWriter(content);
@@ -156,8 +167,8 @@ public class TextParserTest {
 	public void fileExistFormatCorrectPassTest2Calls() throws ParserException, FileNotFoundException {
 		String filename = "temp.txt";
 		String content = "abc\n" +
-				"111-111-1111...111-111-1112...1/15/2020 19:35...1/15/2020 19:39\n" +
-				"111-111-1113...111-111-1114...1/15/2020 19:35...1/15/2020 19:39";
+				"111-111-1111...111-111-1112...1/15/2020 11:35 am...1/15/2020 11:39 am\n" +
+				"111-111-1113...111-111-1114...1/15/2020 11:35 am...1/15/2020 11:39 am";
 		
 		// write content
 		fileWriter(content);
@@ -174,8 +185,8 @@ public class TextParserTest {
 	public void fileExistFormatCorrectPassTest2Calls2Newlines() throws ParserException, FileNotFoundException {
 		String filename = "temp.txt";
 		String content = "abc\n" +
-				"111-111-1111...111-111-1112...1/15/2020 19:35...1/15/2020 19:39\n\n" +
-				"111-111-1113...111-111-1114...1/15/2020 19:35...1/15/2020 19:39";
+				"111-111-1111...111-111-1112...1/15/2020 11:35 am...1/15/2020 11:39 am\n\n" +
+				"111-111-1113...111-111-1114...1/15/2020 11:35 am...1/15/2020 11:39 am";
 		
 		// write content
 		fileWriter(content);

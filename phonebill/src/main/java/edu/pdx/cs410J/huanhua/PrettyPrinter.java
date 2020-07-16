@@ -25,7 +25,7 @@ public class PrettyPrinter implements PhoneBillDumper<PhoneBill> {
 	
 	private String filename;
 	
-	private final static String DATE_PATTERN = "MM/dd/yyyy h:mm a";
+	private final static String DATE_PATTERN = "EEE, d MMM yyyy hh:mm a";
 	
 	/**
 	 * create a PrettyPrinter with a filename
@@ -50,20 +50,34 @@ public class PrettyPrinter implements PhoneBillDumper<PhoneBill> {
 	 */
 	@Override
 	public void dump(PhoneBill bill) throws IOException {
-		File file = new File(filename);
+		File file = new File(this.filename);
 //		file.deleteOnExit();
 		
 		FileWriter fw = new FileWriter(file);
 		PrintWriter pw = new PrintWriter(fw);
 		
-		String customer = bill.getCustomer();
-		pw.println("Customer: " + customer + "\n");
+		String output = constructPrettyOutput(bill);
 		
+		pw.println(output);
+		
+		pw.close();
+	}
+	
+	/**
+	 * Construct a pretty output String for a PhoneBill
+	 * 
+	 * @param bill
+	 *            PhoneBill
+	 * @return output string
+	 */
+	public static String constructPrettyOutput(PhoneBill bill) {
+		String re = "";
 		Collection<PhoneCall> calls = bill.getPhoneCalls();
-		
 		DateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN, Locale.US);
 		
-		pw.println("Total calls: " + calls.size() + "\n");
+		re += "Customer: " + bill.getCustomer() + "\n\n";
+		
+		re += "Total calls: " + calls.size() + "\n\n";
 		
 		for (PhoneCall call : calls) {
 			Date start = call.getStartTime();
@@ -72,24 +86,23 @@ public class PrettyPrinter implements PhoneBillDumper<PhoneBill> {
 			String startString = dateFormat.format(start);
 			String endString = dateFormat.format(end);
 			
-			pw.println(""
-					+ "Called from " + call.getCaller() + " to " + call.getCallee() + "\n"
+			re += "Called from " + call.getCaller() + " to " + call.getCallee() + "\n"
 					+ "         +- " + startString + "\n"
 					+ "         |  " + duration + " minutes" + "\n"
-					+ "         +- " + endString + "\n");
+					+ "         +- " + endString + "\n\n";
 		}
 		
-		pw.close();
+		return re;
 	}
 	
 	/**
-	 * Get the minute difference of two date
+	 * Get the minute difference of two date in Int
 	 * 
 	 * @param start
 	 * @param end
 	 * @return minute difference
 	 */
-	public int getDurationInMinutes(Date start, Date end) {
+	public static int getDurationInMinutes(Date start, Date end) {
 		
 		int minuteDiff = (int) ((end.getTime() - start.getTime()) / (1000 * 60));
 		

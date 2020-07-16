@@ -18,6 +18,8 @@ import edu.pdx.cs410J.AbstractPhoneCall;
  */
 public class PhoneCall extends AbstractPhoneCall implements Comparable<PhoneCall> {
 	
+	public final static String PARSE_DATE_PATTERN = "MM/dd/yyyy h:mm a";
+	
 	private String callerPhoneNumber;
 	
 	private String calleePhoneNumber;
@@ -59,7 +61,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable<PhoneCall
 	 */
 	public Date parseDate(String dateString) throws IllegalArgumentException {
 		// need locale, otherwise not work on other machines
-		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy h:mm a", Locale.US);
+		DateFormat dateFormat = new SimpleDateFormat(PARSE_DATE_PATTERN, Locale.US);
 		Date date = null;
 		try {
 			date = dateFormat.parse(dateString);

@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Locale;
 
 import edu.pdx.cs410J.PhoneBillDumper;
 
@@ -51,9 +54,10 @@ public class TextDumper implements PhoneBillDumper<PhoneBill> {
 		pw.println(customer);
 		
 		Collection<PhoneCall> calls = bill.getPhoneCalls();
+		DateFormat dateFormat = new SimpleDateFormat(PhoneCall.PARSE_DATE_PATTERN, Locale.US);
 		
 		for (PhoneCall call : calls) {
-			pw.println(call.getCaller() + "..." + call.getCallee() + "..." + call.getStartTimeString() + "..." + call.getEndTimeString());
+			pw.println(call.getCaller() + "..." + call.getCallee() + "..." + dateFormat.format(call.getStartTime()) + "..." + dateFormat.format(call.getEndTime()));
 		}
 		
 		pw.close();

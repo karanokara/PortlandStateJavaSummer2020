@@ -66,11 +66,11 @@ public class TextDumperTest {
 	public void dumpPhoneBillTextMatching() throws IOException {
 		String filename = "test.txt";
 		String name = "aaa";
-		String time = "1/15/2020 19:39";
+		String time = "1/15/2020 12:39 pm";
 		
 		PhoneBill bill = new PhoneBill(name);
 		
-		PhoneCall call = new PhoneCall("111-111-1111", "111-111-1112", "1/15/2020 19:35", time);
+		PhoneCall call = new PhoneCall("111-111-1111", "111-111-1112", "1/15/2020 10:35 am", time);
 		
 		bill.addPhoneCall(call);
 		
@@ -81,7 +81,7 @@ public class TextDumperTest {
 		
 		String result = fileReader(filename);
 		assertThat(result, containsString("aaa\n" +
-				"111-111-1111...111-111-1112...1/15/2020 19:35...1/15/2020 19:39"));
+				"111-111-1111...111-111-1112...01/15/2020 10:35 AM...01/15/2020 12:39 PM"));
 		
 		File toDeleteFile = new File(filename);
 		toDeleteFile.delete();
