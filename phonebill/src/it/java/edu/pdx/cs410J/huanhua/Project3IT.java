@@ -97,8 +97,15 @@ public class Project3IT extends InvokeMainTestCase {
 	}
 	
 	@Test
-	public void invokingMainWith9argHasError() {
-		MainMethodResult result = invokeMain(Project3.class, "1", "2", "3", "4", "5", "6", "7", "8", "9");
+	public void invokingMainWith8argHasError() {
+		MainMethodResult result = invokeMain(Project3.class, "1", "2", "3", "4", "5", "6", "7", "8");
+		assertThat(result.getTextWrittenToStandardError(), containsString(MISSING_COMMAND_LINE_ARGUMENTS));
+		assertThat(result.getExitCode(), equalTo(1));
+	}
+	
+	@Test
+	public void invokingMainWith10argHasError() {
+		MainMethodResult result = invokeMain(Project3.class, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
 		assertThat(result.getTextWrittenToStandardError(), containsString(TOOMUCH_COMMAND_LINE_ARGUMENTS));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
@@ -179,12 +186,12 @@ public class Project3IT extends InvokeMainTestCase {
 	}
 	
 	@Test
-	public void provideWithInvalidDateArgHasError() {
+	public void provideWithInvalidFormatDateArgHasError() {
 		String option2 = "-print";
 		String name = "abc";
 		String phone1 = "111-111-1112";
 		String phone2 = "111-222-2222";
-		String date1 = "1/15-2020";
+		String date1 = "1/152020";
 		String time1 = "19:35";
 		String marker1 = "am";
 		String date2 = "1/15/2020";
@@ -192,7 +199,25 @@ public class Project3IT extends InvokeMainTestCase {
 		String marker2 = "Pm";
 		
 		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option2, date1, time1, marker1, date2, time2, marker2);
-		assertThat(result.getTextWrittenToStandardError(), containsString("Invalid date argument"));
+		assertThat(result.getTextWrittenToStandardError(), containsString("Invalid format of date argument"));
+		assertThat(result.getExitCode(), equalTo(1));
+	}
+	
+	@Test
+	public void provideWithInvalidYearArgHasError() {
+		String option2 = "-print";
+		String name = "abc";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "1/15/0";
+		String time1 = "19:35";
+		String marker1 = "am";
+		String date2 = "1/15/2020";
+		String time2 = "12:33";
+		String marker2 = "Pm";
+		
+		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option2, date1, time1, marker1, date2, time2, marker2);
+		assertThat(result.getTextWrittenToStandardError(), containsString("Invalid year argument"));
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 	
@@ -202,7 +227,7 @@ public class Project3IT extends InvokeMainTestCase {
 		String name = "";
 		String phone1 = "111-111-1112";
 		String phone2 = "111-222-2222";
-		String date1 = "1/15-2020";
+		String date1 = "1/15/2020";
 		String time1 = "12:35";
 		String marker1 = "am";
 		String date2 = "1/15/2020";
@@ -221,7 +246,7 @@ public class Project3IT extends InvokeMainTestCase {
 		String name = "11";
 		String phone1 = "111-111-1112";
 		String phone2 = "111-222-2222";
-		String date1 = "1/15-2020";
+		String date1 = "1/15/2020";
 		String time1 = "12:35";
 		String marker1 = "aa";
 		String date2 = "1/15/2020";
@@ -229,7 +254,7 @@ public class Project3IT extends InvokeMainTestCase {
 		String marker2 = "Pm";
 		
 		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option2, date1, time1, marker1, date2, time2, marker2);
-		assertThat(result.getTextWrittenToStandardError(), containsString("Customer name is invalid"));
+		assertThat(result.getTextWrittenToStandardError(), containsString("Invalid format on the day or time"));
 		assertThat(result.getExitCode(), equalTo(1));
 		
 	}
@@ -301,7 +326,7 @@ public class Project3IT extends InvokeMainTestCase {
 	public void provideWithFileNotMatchCustomerNameHasError() throws FileNotFoundException {
 		String filename = "temp.txt";
 		String content = "ab\n" +
-				"111-111-1113...111-111-1112...2/15/2020 19:35...1/15/2000 19:39";
+				"111-111-1113...111-111-1112...2/15/2020 11:35 am...2/15/2020 11:39 am";
 		
 		// write content
 		TextParserTest.fileWriter(content);
@@ -375,7 +400,32 @@ public class Project3IT extends InvokeMainTestCase {
 		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option2, option1, filename, date1, time1, marker1, date2, time2, marker2);
 		assertThat(result.getTextWrittenToStandardError(), containsString("Invalid year argument"));
 		assertThat(result.getExitCode(), equalTo(1));
+	}
+	
+	@Test
+	public void provideWithCorrectFormattedFileWrongArgError() throws FileNotFoundException {
+		String filename = "temp.txt";
+		String content = "abc";
 		
+		// write content
+		TextParserTest.fileWriter(content);
+		
+		String option1 = "-textFile";
+		String option2 = "-print";
+		String name = "abc";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "1/15/2020";
+		String time1 = "12:35";
+		String date2 = "1/16/2020";
+		String time2 = "12:33";
+		String marker1 = "am";
+		String marker2 = "P";
+		
+		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option2, option1, filename, date1, time1, marker1, date2, time2, marker2);
+		
+		assertThat(result.getTextWrittenToStandardError(), containsString("Invalid format on the day or time"));
+		assertThat(result.getExitCode(), equalTo(1));
 	}
 	
 	
@@ -385,29 +435,33 @@ public class Project3IT extends InvokeMainTestCase {
 	@Test
 	public void projectOutputREADMEWithOption1() {
 		MainMethodResult result = invokeMain(Project3.class, "1", "2", "3", "4", "5", "-README");
-		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
 	}
 	
 	@Test
 	public void projectOutputREADMEWithOption2() {
 		MainMethodResult result = invokeMain(Project3.class, "1", "2", "3", "-README", "4");
-		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
 	}
 	
 	@Test
 	public void projectOutputREADMEWithOption3() {
 		MainMethodResult result = invokeMain(Project3.class, "-README", "4");
-		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
 	}
 	
 	@Test
 	public void projectOutputREADMEWithOption4() {
 		MainMethodResult result = invokeMain(Project3.class, "-README");
-		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
 	}
 	
 	@Test
@@ -418,13 +472,16 @@ public class Project3IT extends InvokeMainTestCase {
 		String phone1 = "111-111-1112";
 		String phone2 = "111-222-2222";
 		String date1 = "1/15/2020";
-		String time1 = "19:35";
+		String time1 = "10:35";
 		String date2 = "1/15/2020";
-		String time2 = "19:33";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "Pm";
 		
-		MainMethodResult result = invokeMain(Project3.class, name, option2, phone1, phone2, date1, time1, date2, time2, option1);
-		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
+		MainMethodResult result = invokeMain(Project3.class, name, option2, phone1, phone2, date1, time1, marker1, date2, time2, marker2, option1);
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), containsString(THIS_IS_A_README_FILE));
 	}
 	
 	@Test
@@ -434,14 +491,19 @@ public class Project3IT extends InvokeMainTestCase {
 		String phone1 = "111-111-1112";
 		String phone2 = "111-222-2222";
 		String date1 = "1/15/2020";
-		String time1 = "19:35";
+		String time1 = "10:35";
 		String date2 = "1/15/2020";
-		String time2 = "19:33";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "Pm";
+		String timeShort1 = "1/15/20";
+		String timeShort2 = "1/15/20";
 		
-		MainMethodResult result = invokeMain(Project3.class, name, option, phone1, phone2, date1, time1, date2, time2);
+		MainMethodResult result = invokeMain(Project3.class, name, option, phone1, phone2, date1, time1, marker1, date2, time2, marker2);
 		
-		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + date1 + " " + time1 + " to " + date2 + " " + time2));
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + " to " + timeShort2));
 	}
 	
 	
@@ -452,14 +514,17 @@ public class Project3IT extends InvokeMainTestCase {
 		String phone1 = "111-111-1112";
 		String phone2 = "111-222-2222";
 		String date1 = "1/15/2020";
-		String time1 = "19:35";
+		String time1 = "10:35";
 		String date2 = "1/15/2020";
-		String time2 = "19:33";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "Pm";
 		
-		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, date1, time1, date2, time2);
+		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, date1, time1, marker1, date2, time2, marker2);
 		
-		assertThat(result.getTextWrittenToStandardOut(), containsString(""));
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), containsString(""));
 	}
 	
 	@Test
@@ -476,21 +541,26 @@ public class Project3IT extends InvokeMainTestCase {
 		String phone1 = "111-111-1112";
 		String phone2 = "111-222-2222";
 		String date1 = "1/15/2020";
-		String time1 = "19:35";
-		String date2 = "1/15/2020";
-		String time2 = "19:33";
+		String time1 = "12:35";
+		String date2 = "1/16/2020";
+		String time2 = "12:33";
+		String marker1 = "am";
+		String marker2 = "Pm";
+		String timeShort1 = "1/15/20";
+		String timeShort2 = "1/16/20";
 		
-		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option2, option1, filename, date1, time1, date2, time2);
+		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option2, option1, filename, date1, time1, marker1, date2, time2, marker2);
+		
 		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
-		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + date1 + " " + time1 + " to " + date2 + " " + time2));
 		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + " to " + timeShort2));
 	}
 	
 	@Test
 	public void provideWithCorrectFormattedFileSuccess2() throws FileNotFoundException {
 		String filename = "temp.txt";
 		String content = "abc\n" +
-				"111-111-1113...111-111-1112...2/15/2020 19:35...1/15/1000 19:39";
+				"111-111-1113...111-111-1112...2/15/1020 11:35 am...1/15/1021 11:35 am";
 		
 		// write content
 		TextParserTest.fileWriter(content);
@@ -501,21 +571,25 @@ public class Project3IT extends InvokeMainTestCase {
 		String phone1 = "111-111-1112";
 		String phone2 = "111-222-2222";
 		String date1 = "1/15/2020";
-		String time1 = "19:35";
-		String date2 = "1/15/2020";
-		String time2 = "19:33";
+		String time1 = "12:35";
+		String date2 = "2/15/2020";
+		String time2 = "12:33";
+		String marker1 = "am";
+		String marker2 = "Pm";
+		String timeShort1 = "1/15/20";
+		String timeShort2 = "2/15/20";
 		
-		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option2, option1, filename, date1, time1, date2, time2);
+		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option2, option1, filename, date1, time1, marker1, date2, time2, marker2);
 		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
-		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + date1 + " " + time1 + " to " + date2 + " " + time2));
 		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + " to " + timeShort2));
 	}
 	
 	@Test
 	public void provideWithCorrectFormattedFileSuccess3() throws FileNotFoundException {
 		String filename = "temp.txt";
 		String content = "abc\n" +
-				"111-111-1113...111-111-1112...2/15/2020 19:35...1/15/1000 19:39";
+				"111-111-1113...111-111-1112...2/15/2020 11:35 am...1/15/2100 11:39 am";
 		
 		// write content
 		TextParserTest.fileWriter(content);
@@ -526,21 +600,26 @@ public class Project3IT extends InvokeMainTestCase {
 		String phone1 = "111-111-1112";
 		String phone2 = "111-222-2222";
 		String date1 = "1/15/2020";
-		String time1 = "19:35";
+		String time1 = "10:33";
 		String date2 = "1/15/2020";
-		String time2 = "19:33";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "pm";
+		String timeShort1 = "1/15/20";
+		String timeShort2 = "1/15/20";
 		
-		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option2, date1, time1, date2, time2, option1, filename);
+		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option2, date1, time1, marker1, date2, time2, marker2, option1, filename);
+		
 		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
-		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + date1 + " " + time1 + " to " + date2 + " " + time2));
 		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + " to " + timeShort2));
 	}
 	
 	@Test
 	public void provideWithCorrectFormattedFileWithoutPrintSuccess() throws FileNotFoundException {
 		String filename = "temp.txt";
 		String content = "abc\n" +
-				"111-111-1113...111-111-1112...2/15/2020 19:35...1/15/1000 19:39";
+				"111-111-1113...111-111-1112...1/15/1000 11:39 am...2/15/2020 11:35 am";
 		
 		// write content
 		TextParserTest.fileWriter(content);
@@ -551,14 +630,18 @@ public class Project3IT extends InvokeMainTestCase {
 		String phone1 = "111-111-1112";
 		String phone2 = "111-222-2222";
 		String date1 = "1/15/2020";
-		String time1 = "19:35";
+		String time1 = "11:35";
 		String date2 = "1/15/2020";
-		String time2 = "19:33";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "pm";
+//		String timeShort1 = "1/15/20";
+//		String timeShort2 = "1/15/20";
 		
-		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option1, filename, date1, time1, date2, time2);
+		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option1, filename, date1, time1, marker1, date2, time2, marker2);
 		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
-		assertThat(result.getTextWrittenToStandardOut(), not(containsString(name + "'s phone bill with " + 2 + " phone calls")));
 		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), not(containsString(name + "'s phone bill with " + 2 + " phone calls")));
 	}
 	
 	@Test
@@ -571,14 +654,18 @@ public class Project3IT extends InvokeMainTestCase {
 		String phone1 = "111-111-1112";
 		String phone2 = "111-222-2222";
 		String date1 = "1/15/2020";
-		String time1 = "19:35";
+		String time1 = "11:35";
 		String date2 = "1/15/2020";
-		String time2 = "19:33";
+		String time2 = "11:35";
+		String marker1 = "am";
+		String marker2 = "am";
+		String timeShort1 = "1/15/20";
+		String timeShort2 = "1/15/20";
 		
-		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option1, filename, date1, time1, date2, time2, option2);
+		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option1, filename, date1, time1, marker1, date2, time2, marker2, option2);
 		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
-		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + date1 + " " + time1 + " to " + date2 + " " + time2));
 		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + " to " + timeShort2));
 		
 		File toDeleteFile = new File(filename);
 		toDeleteFile.delete();

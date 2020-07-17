@@ -132,7 +132,8 @@ public class Project3 {
 					
 					if (bill == null) {
 						System.out.println("Text file \"" + textFilename + "\" couldn't find, creating a new Phone Bill...");
-						bill = createPhoneBillWithArguments(arguments, null);
+						newCall = createPhoneCallWithArguments(arguments);
+						bill = createPhoneBillWithArguments(arguments, newCall);
 					}
 					else {
 						System.out.println("Succeed to import text file \"" + textFilename + "\"");
@@ -141,8 +142,8 @@ public class Project3 {
 							System.out.println("Inserting the new Phone Call...");
 							
 							// save the new phone call into bill
-							PhoneCall call = createPhoneCallWithArguments(arguments);
-							bill.addPhoneCall(call);
+							newCall = createPhoneCallWithArguments(arguments);
+							bill.addPhoneCall(newCall);
 						}
 						else {
 							System.err.println("Error: " + "File customer's name \"" + bill.getCustomer() + "\" doesn't match argument customer's name \"" + arguments[0] + "\".");

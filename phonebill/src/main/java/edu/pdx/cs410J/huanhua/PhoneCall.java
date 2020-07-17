@@ -12,7 +12,6 @@ import edu.pdx.cs410J.AbstractPhoneCall;
 /**
  * A PhoneCall is initiated by a person with a given phone number at a given time
  * 
- * 
  * @author KANRA SU
  *
  */
