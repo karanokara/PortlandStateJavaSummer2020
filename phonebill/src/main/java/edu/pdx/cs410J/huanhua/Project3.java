@@ -73,7 +73,7 @@ public class Project3 {
 				String option = arg.substring(1);
 				if (option.equals("README")) {
 					
-					System.out.println(readFile(("README2.txt")));
+					System.out.println(readFile(("README3.txt")));
 					System.exit(0);
 				}
 				else if (option.equals("textFile")) {
@@ -158,7 +158,7 @@ public class Project3 {
 					System.out.println("Dumping Phone Bill into text file \"" + textFilename + "\"...");
 					TextDumper dumper = new TextDumper(textFilename);
 					dumper.dump(bill);
-					System.out.println("Done!");
+					System.out.println("Done!\n");
 				}
 				catch (Exception e) {
 					System.err.println("Error: " + e.getMessage());
