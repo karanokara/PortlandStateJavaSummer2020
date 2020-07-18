@@ -89,10 +89,13 @@ public class Project3 {
 				else if (option.equals("pretty")) {
 					prettyFilename = (++i >= passArgc) ? "" : args[i];
 					
-					if (textFilename.isEmpty()) {
+					if (prettyFilename.isEmpty()) {
 						System.err.println("Error: " + "Need a filename for pretty output or \"-\" for console output.");
 						System.exit(1);
 					}
+					
+					// add to option list
+					options.add(option);
 				}
 				else if (supportOptionslist.contains(option)) {
 					// add to option list

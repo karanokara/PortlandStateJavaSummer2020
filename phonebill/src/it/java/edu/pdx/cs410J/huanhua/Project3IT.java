@@ -7,6 +7,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.junit.Test;
 
@@ -428,7 +429,75 @@ public class Project3IT extends InvokeMainTestCase {
 		assertThat(result.getExitCode(), equalTo(1));
 	}
 	
+	@Test
+	public void prettyPrintWithWrongArgError() throws IOException {
+//		String prettyFilename = "pretty.txt";
+		String filename = "temp.txt";
+		String content = "abc\n" +
+				"111-111-1113...111-111-1112...1/15/1000 11:39 am...2/15/2020 11:35 am\n" +
+				"111-111-1113...111-111-1112...1/15/1000 11:50 am...2/15/2020 11:35 am\n";
+		
+		// write content
+		TextParserTest.fileWriter(content);
+		
+		String option1 = "-textFile";
+		String option2 = "-pretty";
+//		String option3 = "-print";
+		String name = "abc";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "1/15/2020";
+		String time1 = "11:35";
+		String date2 = "1/15/2020";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "pm";
+		
+		MainMethodResult result = invokeMain(Project3.class, option2, "", name, phone1, phone2, option1, filename, date1, time1, marker1, date2, time2, marker2);
+		assertThat(result.getTextWrittenToStandardError(), containsString("Need a filename for pretty output"));
+		assertThat(result.getExitCode(), equalTo(1));
+	}
 	
+	@Test
+	public void prettyPrintError() throws IOException {
+		String prettyFilename = "pretty.txt";
+		String filename = "temp.txt";
+		String content = "abc\n" +
+				"111-111-1113...111-111-1112...1/15/1000 11:39 am...2/15/2020 11:35 am\n" +
+				"111-111-1113...111-111-1112...1/15/1000 11:50 am...2/15/2020 11:35 am\n";
+		
+		// write content
+		TextParserTest.fileWriter(content);
+		
+		String option1 = "-textFile";
+		String option2 = "-pretty";
+		String option3 = "-print";
+		String name = "abc";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "1/15/2020";
+		String time1 = "11:35";
+		String date2 = "1/15/2020";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "pm";
+//		String timeShort1 = "1/15/20";
+//		String timeShort2 = "1/15/20";
+		
+		MainMethodResult result = invokeMain(Project3.class, option2, prettyFilename, option3, name, phone1, phone2, option1, filename, date1, time1, marker1, date2, time2, marker2);
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+		assertThat(result.getExitCode(), equalTo(0));
+		
+		String resultPrettyStirngString = PrettyPrinterTest.fileReader(prettyFilename);
+		assertThat(resultPrettyStirngString, containsString("Called from " + phone1 + " to " + phone2));
+		assertThat(resultPrettyStirngString, containsString("Total calls: 3"));
+		
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2));
+		
+		// clear temp file
+		File toDeleteFile = new File(prettyFilename);
+		toDeleteFile.delete();
+	}
 	
 	// ------------------------------- Success Tests ------------------------------------- //
 	
@@ -668,6 +737,242 @@ public class Project3IT extends InvokeMainTestCase {
 		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + " to " + timeShort2));
 		
 		File toDeleteFile = new File(filename);
+		toDeleteFile.delete();
+	}
+	
+	@Test
+	public void prettyPrintToConsoleSuccess() throws FileNotFoundException {
+		
+		String option2 = "-pretty";
+		String name = "abc";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "1/15/2020";
+		String time1 = "11:35";
+		String date2 = "1/15/2020";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "pm";
+//		String timeShort1 = "1/15/20";
+//		String timeShort2 = "1/15/20";
+		
+		MainMethodResult result = invokeMain(Project3.class, option2, "-", name, phone1, phone2, date1, time1, marker1, date2, time2, marker2);
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Called from " + phone1 + " to " + phone2));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Total calls: 1"));
+	}
+	
+	@Test
+	public void prettyPrintToFileSuccess() throws IOException {
+		String prettyFilename = "pretty.txt";
+		
+		String option2 = "-pretty";
+		String name = "abc";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "1/15/2020";
+		String time1 = "11:35";
+		String date2 = "1/15/2020";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "pm";
+//		String timeShort1 = "1/15/20";
+//		String timeShort2 = "1/15/20";
+		
+		MainMethodResult result = invokeMain(Project3.class, option2, prettyFilename, name, phone1, phone2, date1, time1, marker1, date2, time2, marker2);
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+		assertThat(result.getExitCode(), equalTo(0));
+		
+		String resultPrettyStirngString = PrettyPrinterTest.fileReader(prettyFilename);
+		assertThat(resultPrettyStirngString, containsString("Called from " + phone1 + " to " + phone2));
+		assertThat(resultPrettyStirngString, containsString("Total calls: 1"));
+		
+		assertThat(result.getTextWrittenToStandardOut(), equalTo(""));
+		
+		// clear temp file
+		File toDeleteFile = new File(prettyFilename);
+		toDeleteFile.delete();
+	}
+	
+	@Test
+	public void prettyPrintToFileAndPrintSuccess() throws IOException {
+		String prettyFilename = "pretty.txt";
+		
+		String option2 = "-pretty";
+		String option3 = "-print";
+		String name = "abc";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "1/15/2020";
+		String time1 = "11:35";
+		String date2 = "1/15/2020";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "pm";
+//		String timeShort1 = "1/15/20";
+//		String timeShort2 = "1/15/20";
+		
+		MainMethodResult result = invokeMain(Project3.class, option2, prettyFilename, option3, name, phone1, phone2, date1, time1, marker1, date2, time2, marker2);
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+		assertThat(result.getExitCode(), equalTo(0));
+		
+		String resultPrettyStirngString = PrettyPrinterTest.fileReader(prettyFilename);
+		assertThat(resultPrettyStirngString, containsString("Called from " + phone1 + " to " + phone2));
+		assertThat(resultPrettyStirngString, containsString("Total calls: 1"));
+		
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2));
+		
+		// clear temp file
+		File toDeleteFile = new File(prettyFilename);
+		toDeleteFile.delete();
+	}
+	
+	@Test
+	public void prettyPrintToConsoleAfterReadingFileSuccess() throws FileNotFoundException {
+		String filename = "temp.txt";
+		String content = "abc\n" +
+				"111-111-1113...111-111-1112...1/15/1000 11:39 am...2/15/2020 11:35 am\n" +
+				"111-111-1113...111-111-1112...1/15/1000 11:50 am...2/15/2020 11:35 am\n";
+		
+		// write content
+		TextParserTest.fileWriter(content);
+		
+		String option1 = "-textFile";
+		String option2 = "-pretty";
+		String name = "abc";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "1/15/2020";
+		String time1 = "11:35";
+		String date2 = "1/15/2020";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "pm";
+//		String timeShort1 = "1/15/20";
+//		String timeShort2 = "1/15/20";
+		
+		MainMethodResult result = invokeMain(Project3.class, option2, "-", name, phone1, phone2, option1, filename, date1, time1, marker1, date2, time2, marker2);
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+		assertThat(result.getExitCode(), equalTo(0));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Called from " + phone1 + " to " + phone2));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Total calls: 3"));
+	}
+	
+	@Test
+	public void prettyPrintToFileAfterReadingFileSuccess() throws IOException {
+		String prettyFilename = "pretty.txt";
+		String filename = "temp.txt";
+		String content = "abc\n" +
+				"111-111-1113...111-111-1112...1/15/1000 11:39 am...2/15/2020 11:35 am\n" +
+				"111-111-1113...111-111-1112...1/15/1000 11:50 am...2/15/2020 11:35 am\n";
+		
+		// write content
+		TextParserTest.fileWriter(content);
+		
+		String option1 = "-textFile";
+		String option2 = "-pretty";
+		String name = "abc";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "1/15/2020";
+		String time1 = "11:35";
+		String date2 = "1/15/2020";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "pm";
+//		String timeShort1 = "1/15/20";
+//		String timeShort2 = "1/15/20";
+		
+		MainMethodResult result = invokeMain(Project3.class, option2, prettyFilename, name, phone1, phone2, option1, filename, date1, time1, marker1, date2, time2, marker2);
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+		assertThat(result.getExitCode(), equalTo(0));
+		
+		String resultPrettyStirngString = PrettyPrinterTest.fileReader(prettyFilename);
+		assertThat(resultPrettyStirngString, containsString("Called from " + phone1 + " to " + phone2));
+		assertThat(resultPrettyStirngString, containsString("Total calls: 3"));
+		
+		// clear temp file
+		File toDeleteFile = new File(prettyFilename);
+		toDeleteFile.delete();
+	}
+	
+	@Test
+	public void prettyPrintToFileAfterReadingFileAndPrintSuccess() throws IOException {
+		String prettyFilename = "pretty.txt";
+		String filename = "temp.txt";
+		String content = "abc\n" +
+				"111-111-1113...111-111-1112...1/15/1000 11:39 am...2/15/2020 11:35 am\n" +
+				"111-111-1113...111-111-1112...1/15/1000 11:50 am...2/15/2020 11:35 am\n";
+		
+		// write content
+		TextParserTest.fileWriter(content);
+		
+		String option1 = "-textFile";
+		String option2 = "-pretty";
+		String option3 = "-print";
+		String name = "abc";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "1/15/2020";
+		String time1 = "11:35";
+		String date2 = "1/15/2020";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "pm";
+//		String timeShort1 = "1/15/20";
+//		String timeShort2 = "1/15/20";
+		
+		MainMethodResult result = invokeMain(Project3.class, option2, prettyFilename, option3, name, phone1, phone2, option1, filename, date1, time1, marker1, date2, time2, marker2);
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+		assertThat(result.getExitCode(), equalTo(0));
+		
+		String resultPrettyStirngString = PrettyPrinterTest.fileReader(prettyFilename);
+		assertThat(resultPrettyStirngString, containsString("Called from " + phone1 + " to " + phone2));
+		assertThat(resultPrettyStirngString, containsString("Total calls: 3"));
+		
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2));
+		
+		// clear temp file
+		File toDeleteFile = new File(prettyFilename);
+		toDeleteFile.delete();
+	}
+	
+	@Test
+	public void prettyPrintWithOptionAsFilenameSuccess() throws IOException {
+//		String prettyFilename = "pretty.txt";
+		String filename = "temp.txt";
+		String content = "abc\n" +
+				"111-111-1113...111-111-1112...1/15/1000 11:39 am...2/15/2020 11:35 am\n" +
+				"111-111-1113...111-111-1112...1/15/1000 11:50 am...2/15/2020 11:35 am\n";
+		
+		// write content
+		TextParserTest.fileWriter(content);
+		
+		String option1 = "-textFile";
+		String option2 = "-pretty";
+		String option3 = "-print";
+		String name = "abc";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "1/15/2020";
+		String time1 = "11:35";
+		String date2 = "1/15/2020";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "pm";
+		
+		MainMethodResult result = invokeMain(Project3.class, option2, option3, name, phone1, phone2, option1, filename, date1, time1, marker1, date2, time2, marker2);
+		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
+		assertThat(result.getExitCode(), equalTo(0));
+		
+		String resultPrettyStirngString = PrettyPrinterTest.fileReader(option3);
+		assertThat(resultPrettyStirngString, containsString("Called from " + phone1 + " to " + phone2));
+		assertThat(resultPrettyStirngString, containsString("Total calls: 3"));
+		
+		
+		// clear temp file
+		File toDeleteFile = new File(option3);
 		toDeleteFile.delete();
 	}
 	

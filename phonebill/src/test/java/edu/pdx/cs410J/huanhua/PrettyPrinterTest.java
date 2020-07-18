@@ -16,7 +16,7 @@ import org.junit.Test;
  */
 public class PrettyPrinterTest {
 	
-	private String fileReader(String filename) throws IOException {
+	public static String fileReader(String filename) throws IOException {
 		File file = new File(filename);
 		String re = "";
 		
