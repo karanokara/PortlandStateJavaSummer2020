@@ -459,8 +459,8 @@ public class Project3IT extends InvokeMainTestCase {
 	}
 	
 	@Test
-	public void prettyPrintError() throws IOException {
-		String prettyFilename = "pretty.txt";
+	public void prettyPrintWithNoArgError() throws IOException {
+//		String prettyFilename = "pretty.txt";
 		String filename = "temp.txt";
 		String content = "abc\n" +
 				"111-111-1113...111-111-1112...1/15/1000 11:39 am...2/15/2020 11:35 am\n" +
@@ -484,21 +484,44 @@ public class Project3IT extends InvokeMainTestCase {
 //		String timeShort1 = "1/15/20";
 //		String timeShort2 = "1/15/20";
 		
-		MainMethodResult result = invokeMain(Project3.class, option2, prettyFilename, option3, name, phone1, phone2, option1, filename, date1, time1, marker1, date2, time2, marker2);
-		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
-		assertThat(result.getExitCode(), equalTo(0));
+		MainMethodResult result = invokeMain(Project3.class, option3, name, phone1, phone2, option1, filename, date1, time1, marker1, date2, time2, marker2, option2);
 		
-		String resultPrettyStirngString = PrettyPrinterTest.fileReader(prettyFilename);
-		assertThat(resultPrettyStirngString, containsString("Called from " + phone1 + " to " + phone2));
-		assertThat(resultPrettyStirngString, containsString("Total calls: 3"));
-		
-		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2));
-		
-		// clear temp file
-		File toDeleteFile = new File(prettyFilename);
-		toDeleteFile.delete();
+		assertThat(result.getTextWrittenToStandardError(), containsString("Need a filename for pretty output"));
+		assertThat(result.getExitCode(), equalTo(1));
 	}
 	
+	@Test
+	public void prettyPrintWithFolderAsArgError() throws IOException {
+		String prettyFilename = "target";	// is a folder
+//		String filename = "temp.txt";
+//		String content = "abc\n" +
+//				"111-111-1113...111-111-1112...1/15/1000 11:39 am...2/15/2020 11:35 am\n" +
+//				"111-111-1113...111-111-1112...1/15/1000 11:50 am...2/15/2020 11:35 am\n";
+//		
+//		// write content
+//		TextParserTest.fileWriter(content);
+		
+//		String option1 = "-textFile";
+		String option2 = "-pretty";
+		String option3 = "-print";
+		String name = "abc";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "1/15/2020";
+		String time1 = "11:35";
+		String date2 = "1/15/2020";
+		String time2 = "10:33";
+		String marker1 = "am";
+		String marker2 = "pm";
+//		String timeShort1 = "1/15/20";
+//		String timeShort2 = "1/15/20";
+		
+		MainMethodResult result = invokeMain(Project3.class, option3, name, phone1, phone2, date1, time1, marker1, date2, time2, marker2, option2, prettyFilename);
+		
+		assertThat(result.getExitCode(), equalTo(1));
+		assertThat(result.getTextWrittenToStandardError(), containsString(prettyFilename));
+		assertThat(result.getTextWrittenToStandardError(), containsString("Error"));
+	}
 	// ------------------------------- Success Tests ------------------------------------- //
 	
 	@Test

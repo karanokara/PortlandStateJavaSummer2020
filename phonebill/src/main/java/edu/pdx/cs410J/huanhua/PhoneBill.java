@@ -21,8 +21,8 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
 	// a comparator for comparing 2 PhoneCall
 	static class phoneCallComparator implements Comparator<PhoneCall> {
 		public int compare(PhoneCall o1, PhoneCall o2) {
-			// sort by large to small, latest to oldest
-			return o2.compareTo(o1);
+			// sort by small to large, earliest to latest
+			return o1.compareTo(o2);
 		}
 	}
 	

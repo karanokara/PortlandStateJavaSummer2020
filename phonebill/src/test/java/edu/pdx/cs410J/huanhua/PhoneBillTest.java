@@ -109,10 +109,10 @@ public class PhoneBillTest {
 		
 		TreeSet<PhoneCall> calls = (TreeSet<PhoneCall>) bill.getPhoneCalls();
 		
-		int i = 0;
+		int i = 5;
 		for (PhoneCall call : calls) {
 			assertThat(call, equalTo(callArr[i]));
-			++i;
+			--i;
 		}
 	}
 	
@@ -140,10 +140,10 @@ public class PhoneBillTest {
 		
 		TreeSet<PhoneCall> calls = (TreeSet<PhoneCall>) bill.getPhoneCalls();
 		
-		int i = 0;
+		int i = 5;
 		for (PhoneCall call : calls) {
 			assertThat(call, equalTo(callArr[i]));
-			++i;
+			--i;
 		}
 		
 	}
