@@ -595,7 +595,7 @@ public class Project3IT extends InvokeMainTestCase {
 		
 		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 		assertThat(result.getExitCode(), equalTo(0));
-		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + " to " + timeShort2));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + ", " + time1 + " AM to " + timeShort2 + ", " + time2 + " PM"));
 	}
 	
 	
@@ -645,7 +645,7 @@ public class Project3IT extends InvokeMainTestCase {
 		
 		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 		assertThat(result.getExitCode(), equalTo(0));
-		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + " to " + timeShort2));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + ", " + time1 + " AM to " + timeShort2 + ", " + time2 + " PM"));
 	}
 	
 	@Test
@@ -674,7 +674,7 @@ public class Project3IT extends InvokeMainTestCase {
 		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option2, option1, filename, date1, time1, marker1, date2, time2, marker2);
 		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 		assertThat(result.getExitCode(), equalTo(0));
-		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + " to " + timeShort2));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + ", " + time1 + " AM to " + timeShort2 + ", " + time2 + " PM"));
 	}
 	
 	@Test
@@ -704,7 +704,7 @@ public class Project3IT extends InvokeMainTestCase {
 		
 		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 		assertThat(result.getExitCode(), equalTo(0));
-		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + " to " + timeShort2));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + ", " + time1 + " AM to " + timeShort2 + ", " + time2 + " PM"));
 	}
 	
 	@Test
@@ -757,7 +757,7 @@ public class Project3IT extends InvokeMainTestCase {
 		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, option1, filename, date1, time1, marker1, date2, time2, marker2, option2);
 		assertThat(result.getTextWrittenToStandardError(), equalTo(""));
 		assertThat(result.getExitCode(), equalTo(0));
-		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + " to " + timeShort2));
+		assertThat(result.getTextWrittenToStandardOut(), containsString("Phone call from " + phone1 + " to " + phone2 + " from " + timeShort1 + ", " + time1 + " AM to " + timeShort2 + ", " + time2 + " AM"));
 		
 		File toDeleteFile = new File(filename);
 		toDeleteFile.delete();

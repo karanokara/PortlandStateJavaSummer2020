@@ -101,9 +101,10 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable<PhoneCall
 	 */
 	@Override
 	public String getStartTimeString() {
-		String formattedDate = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).format(this.startTime);
+//		String formattedDate = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).format(this.startTime);
+		String formattedDate = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.US).format(this.startTime);
 		
-//		assertEquals(formattedDate, "1973/03/03"); // in windows
+		//		assertEquals(formattedDate, "1973/03/03"); // in windows
 //		assertEquals(formattedDate, "3/3/73"); // in linux
 		
 		return formattedDate;
@@ -117,7 +118,8 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable<PhoneCall
 	 */
 	@Override
 	public String getEndTimeString() {
-		String formattedDate = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).format(this.endTime);
+//		String formattedDate = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).format(this.endTime);
+		String formattedDate = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.US).format(this.endTime);
 		
 //		assertEquals(formattedDate, "1973/03/03"); // in windows
 //		assertEquals(formattedDate, "3/3/73"); // in linux
