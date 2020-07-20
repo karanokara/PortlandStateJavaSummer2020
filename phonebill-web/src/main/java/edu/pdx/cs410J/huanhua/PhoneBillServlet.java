@@ -1,168 +1,229 @@
 package edu.pdx.cs410J.huanhua;
 
-import com.google.common.annotations.VisibleForTesting;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This servlet ultimately provides a REST API for working with an
- * <code>PhoneBill</code>.  However, in its current state, it is an example
- * of how to use HTTP and Java servlets to store simple dictionary of words
- * and their definitions.
+ * <code>PhoneBill</code>.
+ * 
+ * Usage:
+ * 
+ * http://host:port/phonebill/calls?customer=name
+ * - GET returns all calls in the phone bill formatted using the TextDumper
+ * - POST creates a new call from the HTTP request parameters customer, callerNumber,
+ * calleeNumber, start, and end. If the phone bill does not exist, a new one should be
+ * created.
+ * 
+ * 
+ * http://host:port/phonebill/calls?customer=name&start=startDateTime&end=endDateTime
+ * - GET returns all of given phone bill’s calls (in the format used by TextDumper)
+ * that occurred between the start date/time and the end date/time. The date/time format in the
+ * URL is the same as on the command line.
+ * 
  */
-public class PhoneBillServlet extends HttpServlet
-{
-    static final String WORD_PARAMETER = "word";
-    static final String DEFINITION_PARAMETER = "definition";
-
-    private final Map<String, String> dictionary = new HashMap<>();
-
-    /**
-     * Handles an HTTP GET request from a client by writing the definition of the
-     * word specified in the "word" HTTP parameter to the HTTP response.  If the
-     * "word" parameter is not specified, all of the entries in the dictionary
-     * are written to the HTTP response.
-     */
-    @Override
-    protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
-    {
-        response.setContentType( "text/plain" );
-
-        String word = getParameter( WORD_PARAMETER, request );
-        if (word != null) {
-            writeDefinition(word, response);
-
-        } else {
-            writeAllDictionaryEntries(response);
-        }
-    }
-
-    /**
-     * Handles an HTTP POST request by storing the dictionary entry for the
-     * "word" and "definition" request parameters.  It writes the dictionary
-     * entry to the HTTP response.
-     */
-    @Override
-    protected void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
-    {
-        response.setContentType( "text/plain" );
-
-        String word = getParameter(WORD_PARAMETER, request );
-        if (word == null) {
-            missingRequiredParameter(response, WORD_PARAMETER);
-            return;
-        }
-
-        String definition = getParameter(DEFINITION_PARAMETER, request );
-        if ( definition == null) {
-            missingRequiredParameter( response, DEFINITION_PARAMETER );
-            return;
-        }
-
-        this.dictionary.put(word, definition);
-
-        PrintWriter pw = response.getWriter();
-        pw.println(Messages.definedWordAs(word, definition));
-        pw.flush();
-
-        response.setStatus( HttpServletResponse.SC_OK);
-    }
-
-    /**
-     * Handles an HTTP DELETE request by removing all dictionary entries.  This
-     * behavior is exposed for testing purposes only.  It's probably not
-     * something that you'd want a real application to expose.
-     */
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/plain");
-
-        this.dictionary.clear();
-
-        PrintWriter pw = response.getWriter();
-        pw.println(Messages.allDictionaryEntriesDeleted());
-        pw.flush();
-
-        response.setStatus(HttpServletResponse.SC_OK);
-
-    }
-
-    /**
-     * Writes an error message about a missing parameter to the HTTP response.
-     *
-     * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
-     */
-    private void missingRequiredParameter( HttpServletResponse response, String parameterName )
-        throws IOException
-    {
-        String message = Messages.missingRequiredParameter(parameterName);
-        response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
-    }
-
-    /**
-     * Writes the definition of the given word to the HTTP response.
-     *
-     * The text of the message is formatted with
-     * {@link Messages#formatDictionaryEntry(String, String)}
-     */
-    private void writeDefinition(String word, HttpServletResponse response) throws IOException {
-        String definition = this.dictionary.get(word);
-
-        if (definition == null) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-
-        } else {
-            PrintWriter pw = response.getWriter();
-            pw.println(Messages.formatDictionaryEntry(word, definition));
-
-            pw.flush();
-
-            response.setStatus(HttpServletResponse.SC_OK);
-        }
-    }
-
-    /**
-     * Writes all of the dictionary entries to the HTTP response.
-     *
-     * The text of the message is formatted with
-     * {@link Messages#formatDictionaryEntry(String, String)}
-     */
-    private void writeAllDictionaryEntries(HttpServletResponse response ) throws IOException
-    {
-        PrintWriter pw = response.getWriter();
-        Messages.formatDictionaryEntries(pw, dictionary);
-
-        pw.flush();
-
-        response.setStatus( HttpServletResponse.SC_OK );
-    }
-
-    /**
-     * Returns the value of the HTTP request parameter with the given name.
-     *
-     * @return <code>null</code> if the value of the parameter is
-     *         <code>null</code> or is the empty string
-     */
-    private String getParameter(String name, HttpServletRequest request) {
-      String value = request.getParameter(name);
-      if (value == null || "".equals(value)) {
-        return null;
-
-      } else {
-        return value;
-      }
-    }
-
-    @VisibleForTesting
-    String getDefinition(String word) {
-        return this.dictionary.get(word);
-    }
-
+public class PhoneBillServlet extends HttpServlet {
+	static final String DEFINITION_PARAMETER = "definition";
+	
+	static final String CUSTOMER_PARAMETER = "customer";
+	static final String CALLER_PARAMETER = "callerNumber";
+	static final String CALLEE_PARAMETER = "calleeNumber";
+	static final String STARTDATETIME_PARAMETER = "start";
+	static final String ENDDATETIME_PARAMETER = "end";
+	
+	// mapping name -> PhoneBill
+	private final Map<String, PhoneBill> dictionary = new HashMap<String, PhoneBill>();
+	
+	/**
+	 * Handles an HTTP GET request from a client by fetching PhoneCalls from
+	 * an existing PhoneBill by customer name
+	 * /phonebill/calls?customer=name
+	 * 
+	 * Can also use filter by providing start and end date
+	 * /phonebill/calls?customer=name&start=startDateTime&end=endDateTime
+	 * 
+	 * @param request
+	 * @param response
+	 */
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/plain");
+		
+		String customer = getParameter(request, CUSTOMER_PARAMETER);
+		String start = getParameter(request, STARTDATETIME_PARAMETER);
+		String end = getParameter(request, ENDDATETIME_PARAMETER);
+		
+		if (customer == null) {
+			missingRequiredParameter(response, CUSTOMER_PARAMETER);
+			return;
+		}
+		
+		if (start == null || end == null) {
+			// return all calls in a phone bill
+			sendPhoneBill(response, customer, null, null);
+		}
+		else {
+			// perform search from time start -> end
+			PhoneCall tempPhoneCall = null;
+			try {
+				tempPhoneCall = new PhoneCall("111-111-1234", "111-111-1235", start, end);
+			}
+			catch (IllegalArgumentException e) {
+				invalidRequiredParameter(response, e.getMessage());
+			}
+			
+			sendPhoneBill(response, customer, tempPhoneCall.getStartTime(), tempPhoneCall.getEndTime());
+		}
+		
+	}
+	
+	/**
+	 * Handles an HTTP POST request by storing an PhoneCall entry for a
+	 * PhoneBill or create a new PhoneBill
+	 * 
+	 * @param request
+	 * @param response
+	 */
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/plain");
+		
+		String customer = getParameter(request, CUSTOMER_PARAMETER);
+		String caller = getParameter(request, CALLER_PARAMETER);
+		String callee = getParameter(request, CALLEE_PARAMETER);
+		String start = getParameter(request, STARTDATETIME_PARAMETER);
+		String end = getParameter(request, ENDDATETIME_PARAMETER);
+		
+		if (customer == null) {
+			missingRequiredParameter(response, CUSTOMER_PARAMETER);
+			return;
+		}
+		
+		if (caller == null) {
+			missingRequiredParameter(response, CALLER_PARAMETER);
+			return;
+		}
+		
+		if (callee == null) {
+			missingRequiredParameter(response, CALLEE_PARAMETER);
+			return;
+		}
+		
+		if (start == null) {
+			missingRequiredParameter(response, STARTDATETIME_PARAMETER);
+			return;
+		}
+		
+		if (end == null) {
+			missingRequiredParameter(response, ENDDATETIME_PARAMETER);
+			return;
+		}
+		
+		PhoneBill bill = this.dictionary.get(customer);
+		PrintWriter pw = response.getWriter();
+		
+		if (bill == null) {
+			bill = new PhoneBill(customer);
+			pw.println("Created a new PhoneBill for \"" + customer + "\"");
+			this.dictionary.put(customer, bill);
+		}
+		
+		PhoneCall call = null;
+		try {
+			call = new PhoneCall(caller, callee, start, end);
+		}
+		catch (IllegalArgumentException e) {
+			invalidRequiredParameter(response, e.getMessage());
+		}
+		
+		bill.addPhoneCall(call);
+		pw.println("Added a new PhoneCall to \"" + customer + "\" PhoneBill");
+		
+		pw.flush();
+		
+		response.setStatus(HttpServletResponse.SC_OK);
+	}
+	
+	/**
+	 * Writes an error message about a missing parameter to the HTTP response.
+	 *
+	 * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
+	 * 
+	 * @param response
+	 * @param parameterName
+	 * @throws IOException
+	 */
+	private void missingRequiredParameter(HttpServletResponse response, String parameterName) throws IOException {
+		String message = String.format("The required parameter \"%s\" is missing", parameterName);
+		
+		// Error Status code (412)
+		response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
+	}
+	
+	/**
+	 * Writes an error message about an invalid parameter to the HTTP response.
+	 *
+	 * The text of the error message is created by {@link Messages#missingRequiredParameter(String)}
+	 * 
+	 * @param response
+	 * @param parameterName
+	 * @throws IOException
+	 */
+	private void invalidRequiredParameter(HttpServletResponse response, String parameterName) throws IOException {
+		String message = String.format("Required parameters error: \"%s\"", parameterName);
+		
+		// Error Status code (412)
+		response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
+	}
+	
+	/**
+	 * Send a Phone Bill with filter by start and end time to the HTTP response.
+	 *
+	 * The text of the message is formatted with
+	 * {@link Messages#formatDictionaryEntry(String, String)}
+	 */
+	private void sendPhoneBill(HttpServletResponse response, String customer, Date start, Date end) throws IOException {
+		PhoneBill bill = this.dictionary.get(customer);
+		
+		if (bill == null) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			
+		}
+		else {
+			PrintWriter pw = response.getWriter();
+			pw.println(TextDumper.formatOutput(bill, start, end));
+			
+			pw.flush();
+			
+			response.setStatus(HttpServletResponse.SC_OK);
+		}
+	}
+	
+	/**
+	 * Returns the value of the HTTP request parameter with the given name.
+	 *
+	 * @param request
+	 * @param name
+	 * @return <code>null</code> if the value of the parameter is
+	 *         <code>null</code> or is the empty string
+	 */
+	private String getParameter(HttpServletRequest request, String name) {
+		String value = request.getParameter(name);
+		if (value == null || "".equals(value)) {
+			return null;
+			
+		}
+		else {
+			return value;
+		}
+	}
+	
 }

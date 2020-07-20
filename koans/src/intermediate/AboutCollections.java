@@ -67,7 +67,7 @@ public class AboutCollections {
 		set.add("Cat");
 		set.add("Dog");
 		
-		assertEquals(set.size(), 2);
+		assertEquals(set.size(), 2);					// no duplicate
 		assertEquals(set.contains("Dog"), true);
 		assertEquals(set.contains("Cat"), true);
 		assertEquals(set.contains("Chicken"), false);
@@ -79,9 +79,9 @@ public class AboutCollections {
 		
 		map.put("first key", "first value");
 		map.put("second key", "second value");
-		map.put("first key", "other value");		// replace 1st one
+		map.put("first key", "other value");		// update 1st one
 		
-		assertEquals(map.size(), 2);
+		assertEquals(map.size(), 2);				// no duplicate
 		assertEquals(map.containsKey("first key"), true);
 		assertEquals(map.containsKey("second key"), true);
 		assertEquals(map.containsValue("first value"), false);
