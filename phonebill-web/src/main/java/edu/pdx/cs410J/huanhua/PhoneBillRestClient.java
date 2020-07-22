@@ -5,8 +5,6 @@ import static java.net.HttpURLConnection.HTTP_OK;
 import java.io.IOException;
 import java.util.Map;
 
-import com.google.common.annotations.VisibleForTesting;
-
 import edu.pdx.cs410J.ParserException;
 import edu.pdx.cs410J.web.HttpRequestHelper;
 
@@ -51,19 +49,15 @@ public class PhoneBillRestClient extends HttpRequestHelper {
 	 * @throws IOException
 	 */
 	public String getPhoneBill(String customer, String start, String end) throws IOException, PhoneBillRestException {
-		Response response = get(this.url, Map.of(CUSTOMER_PARAMETER, customer, STARTDATETIME_PARAMETER, start, ENDDATETIME_PARAMETER, end));
+		Response response = null;
+		if (start == null || end == null)
+			response = get(this.url, Map.of(CUSTOMER_PARAMETER, customer));
+		else
+			response = get(this.url, Map.of(CUSTOMER_PARAMETER, customer, STARTDATETIME_PARAMETER, start, ENDDATETIME_PARAMETER, end));
 		
 		throwExceptionIfNotOkayHttpStatus(response);
 		
 		return response.getContent();
-//		File file = new File("phonebilltempfile");
-//		file.deleteOnExit();
-//		
-//		PrintWriter pw = new PrintWriter(file);
-//		pw.println(response);
-//		pw.close();
-//		
-//		return TextParser.parseFile(file);
 	}
 	
 	/**
@@ -119,16 +113,16 @@ public class PhoneBillRestClient extends HttpRequestHelper {
 		int code = response.getCode();
 		
 		if (code != HTTP_OK) {
-			throw new PhoneBillRestException(code);
+			throw new PhoneBillRestException(code, response.getContent());
 		}
 		
 		return response;
 	}
 	
-	@VisibleForTesting
+	
 	class PhoneBillRestException extends RuntimeException {
-		PhoneBillRestException(int httpStatusCode) {
-			super("Got an HTTP Status Code of " + httpStatusCode);
+		PhoneBillRestException(int httpStatusCode, String description) {
+			super("HTTP Status Code " + httpStatusCode + ": " + description);
 		}
 	}
 	

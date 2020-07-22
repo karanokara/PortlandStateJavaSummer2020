@@ -1,7 +1,6 @@
 package edu.pdx.cs410J.huanhua;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -38,7 +37,7 @@ public class Project4 {
 		PhoneBill bill = null;
 		PhoneCall newCall = null;
 		String host = null;
-		int port;
+		int port = -1;
 		String responseString = null;
 		
 		// 1. parse the command line
@@ -116,33 +115,58 @@ public class Project4 {
 		
 		PhoneBillRestClient client = new PhoneBillRestClient(host, port);
 		
-		if (argc == 0) {
-			// get all phone calls
-			responseString = client.getPhoneBill(arguments[0], null, null);
+		if (argc == 0 || argc == 6) {
+			try {
+				// get all phone calls 
+				if (argc == 0)
+					responseString = client.getPhoneBill(arguments[0], null, null);
+				// search phone calls
+				else
+					responseString = client.getPhoneBill(arguments[0], arguments[1] + " " + arguments[2] + " " + arguments[3], arguments[4] + " " + arguments[5] + " " + arguments[6]);
+			}
+			catch (Exception e) {
+				System.err.println("Error from server: " + e.getMessage());
+				System.exit(1);
+			}
 			
-			// read the file into phone bill
-			File file = new File("phonebilltempfile");
-			file.deleteOnExit();
+			try {
+				// read the file into phone bill
+				File file = new File("phonebilltempfile");
+				file.deleteOnExit();
+				
+				PrintWriter pw = new PrintWriter(file);
+				pw.print(responseString);
+				pw.close();
+				
+				bill = TextParser.parseFile(file);
+			}
+			catch (Exception e) {
+				System.err.println("Error parsing response from server: " + e.getMessage());
+				System.exit(1);
+			}
 			
-			PrintWriter pw = new PrintWriter(file);
-			pw.print(responseString);
-			pw.close();
-			
-			bill = TextParser.parseFile(file);
-		}
-		else if (argc == 6) {
-			// search phone calls
+			// get and search will do pretty print
+			options.add("pretty");
 		}
 		else if (argc == 8) {
-			// add phone call
+			try {
+				// add phone call
+				responseString = client.postPhoneBill(arguments[0], arguments[1], arguments[2], arguments[3] + " " + arguments[4] + " " + arguments[5], arguments[6] + " " + arguments[7] + " " + arguments[8]);
+			}
+			catch (Exception e) {
+				System.err.println("Error from server: " + e.getMessage());
+				System.exit(1);
+			}
 			
+			System.out.println(responseString);
 		}
 		
-		// perform operation on arguemnts and options
+		// perform operation from result bill on arguemnts and options
 		for (int i = 0; i < options.size(); ++i) {
 			String option = options.get(i);
 			
 			// -print option
+			// print new call
 			if (option.equals("print")) {
 				try {
 					newCall = createPhoneCallWithArguments(arguments);
@@ -166,93 +190,6 @@ public class Project4 {
 				
 			}
 			
-			if (option.equals("textFile")) {
-				try {
-					// read the file into phone bill
-					TextParser parser = new TextParser(textFilename);
-					bill = parser.parse();
-					
-					if (bill == null) {
-						System.out.println("Text file \"" + textFilename + "\" couldn't find, creating a new Phone Bill...");
-						newCall = createPhoneCallWithArguments(arguments);
-						bill = createPhoneBillWithArguments(arguments, newCall);
-					}
-					else {
-						System.out.println("Succeed to import text file \"" + textFilename + "\"");
-						
-						if (bill.getCustomer().equals(arguments[0])) {
-							System.out.println("Inserting the new Phone Call...");
-							
-							// save the new phone call into bill
-							newCall = createPhoneCallWithArguments(arguments);
-							bill.addPhoneCall(newCall);
-						}
-						else {
-							System.err.println("Error: " + "File customer's name \"" + bill.getCustomer() + "\" doesn't match argument customer's name \"" + arguments[0] + "\".");
-							System.exit(1);
-						}
-					}
-					
-					// save the updated phone bill into file
-					System.out.println("Dumping Phone Bill into text file \"" + textFilename + "\"...");
-					TextDumper dumper = new TextDumper(textFilename);
-					dumper.dump(bill);
-					System.out.println("Done!\n");
-				}
-				catch (Exception e) {
-					System.err.println("Error: " + e.getMessage());
-					System.exit(1);
-				}
-			}
-//			else if (option.equals("print" or "pretty")) {
-			else {
-				// no PhoneBill loaded from file
-				if (bill == null) {
-					try {
-						newCall = createPhoneCallWithArguments(arguments);
-						bill = createPhoneBillWithArguments(arguments, newCall);
-					}
-					catch (IllegalArgumentException e) {
-						System.err.println("Error: " + e.getMessage());
-						System.exit(1);
-					}
-				}
-				
-				if (option.equals("pretty")) {
-					if (prettyFilename.equals("-")) {
-						// print to console
-						System.out.println(PrettyPrinter.constructPrettyOutput(bill));
-					}
-					else {
-						// print to file
-						try {
-							PrettyPrinter prettyPrinter = new PrettyPrinter(prettyFilename);
-							prettyPrinter.dump(bill);
-						}
-						catch (IOException e) {
-							System.err.println("Error: " + e.getMessage());
-							System.exit(1);
-						}
-					}
-				}
-				else {
-					// -print option
-					System.out.println("New Phone Call:");
-					System.out.println(newCall.toString());
-				}
-			}
-			
-		}
-		
-		// If nothing has performed, just validate the arguments
-		if (bill == null) {
-			try {
-				bill = createPhoneBillWithArguments(arguments, null);
-			}
-			catch (IllegalArgumentException e) {
-				System.err.println("Error: " + e.getMessage());
-				System.exit(1);
-			}
 		}
 		
 		System.exit(0);

@@ -192,19 +192,16 @@ public class PhoneBillServlet extends HttpServlet {
 	 */
 	private void sendPhoneBill(HttpServletResponse response, String customer, Date start, Date end) throws IOException {
 		PhoneBill bill = this.dictionary.get(customer);
+		PrintWriter pw = response.getWriter();
 		
 		if (bill == null) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			
+			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Can't find customer\"" + customer + "\"");
 		}
 		else {
-			PrintWriter pw = response.getWriter();
 			pw.println(TextDumper.formatOutput(bill, start, end));
-			
-			pw.flush();
-			
 			response.setStatus(HttpServletResponse.SC_OK);
 		}
+		pw.flush();
 	}
 	
 	/**
