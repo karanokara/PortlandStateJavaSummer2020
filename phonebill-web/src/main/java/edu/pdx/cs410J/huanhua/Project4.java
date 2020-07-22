@@ -1,16 +1,15 @@
 package edu.pdx.cs410J.huanhua;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-import edu.pdx.cs410J.family.PrettyPrinter;
 import edu.pdx.cs410J.web.HttpRequestHelper;
+
 
 /**
  * The main class that parses the command line and communicates with the
@@ -22,9 +21,6 @@ import edu.pdx.cs410J.web.HttpRequestHelper;
  */
 public class Project4 {
 	
-	public static final String MISSING_ARGS = "Missing command line arguments";
-	
-	
 	/**
 	 * A main() for interacting with the REST-ful Phone Bill Web Service
 	 * Can do get and post PhoneBill from/to the running Phone Bill Web server
@@ -34,7 +30,7 @@ public class Project4 {
 	 */
 	public static void main(String[] args) {
 		int argc = -1;
-		int requireArgc = 9;
+		int requireArgc = 1;
 		int passArgc = args.length;
 		LinkedList<String> options = new LinkedList<String>();
 		String arguments[] = new String[9];
@@ -42,7 +38,8 @@ public class Project4 {
 		PhoneBill bill = null;
 		PhoneCall newCall = null;
 		String host = null;
-		String port = null;
+		int port;
+		String responseString = null;
 		
 		// 1. parse the command line
 		for (int i = 0; i < passArgc; ++i) {
@@ -52,48 +49,52 @@ public class Project4 {
 			if (arg.startsWith("-")) {
 				String option = arg.substring(1);
 				if (option.equals("README")) {
-					
-					System.out.println(readFile(("README3.txt")));
-					System.exit(0);
+					usage();
 				}
-				else if (option.equals("textFile")) {
-					textFilename = args[(++i >= passArgc) ? (i - 1) : i];
+				else if (option.equals("host")) {
+					host = (++i >= passArgc) ? "" : args[i];
 					
-					if (textFilename.startsWith("-") || textFilename.isEmpty()) {
-						System.err.println("Error: " + "Need a filename for using text file for phone bill.");
+					if (host.isEmpty()) {
+						System.err.println("Error: " + "Need a hostname.");
+						System.exit(1);
+					}
+				}
+				else if (option.equals("port")) {
+					String portString = (++i >= passArgc) ? "" : args[i];
+					
+					if (portString.isEmpty()) {
+						System.err.println("Error: " + "Need a port number.");
 						System.exit(1);
 					}
 					
-					if (!options.contains(option))
-						options.addFirst(option);
-				}
-				else if (option.equals("pretty")) {
-					prettyFilename = (++i >= passArgc) ? "" : args[i];
-					
-					if (prettyFilename.isEmpty()) {
-						System.err.println("Error: " + "Need a filename for pretty output or \"-\" for console output.");
+					try {
+						port = Integer.parseInt(portString);
+					}
+					catch (NumberFormatException ex) {
+						System.err.println("Port \"" + portString + "\" must be an integer");
 						System.exit(1);
 					}
-					
-					// add to option list
-					if (!options.contains(option))
-						options.add(option);
 				}
-				else if (supportOptionslist.contains(option)) {
-					// add to option list
-					if (!options.contains(option))
-						options.add(option);
+				else if (option.equals("print")) {
+					requireArgc = 9;
 				}
-				else {
+				else if (option.equals("search")) {
+					requireArgc = 7;
+				}
+				else if (!supportOptionslist.contains(option)) {
 					System.err.println("Error: " + "Using unsupported option: -" + option);
 					System.exit(1);
 				}
+				
+				// add to option list
+				if (!options.contains(option))
+					options.add(option);
 			}
 			else {
 				++argc;
 				
 				if (argc >= requireArgc) {
-					System.err.println("Error: " + "Too much arguments, need only " + requireArgc + " arguements");
+					System.err.println("Error: " + "Too much arguments, need maximum " + requireArgc + " arguements");
 					System.exit(1);
 				}
 				
@@ -101,24 +102,69 @@ public class Project4 {
 			}
 		}
 		
-		if (argc != (requireArgc - 1)) {
-			System.err.println("Error: " + "Missing command line arguments, need " + requireArgc + " arguements");
+		// no option, 1 for customer name, or 9 for all parameters
+		if (requireArgc == 1 && (argc != 0 && argc != 8)) {
+			System.err.println("Error: " + "Wrong number of arguments, need 1 arguments for customer name, or need 9 arguements for adding phone call");
+			System.exit(1);
+		}
+		// with option, need exact # of args
+		else if (argc != (requireArgc - 1)) {
+			System.err.println("Error: " + "Wrong number of arguments, need " + requireArgc + " arguements.");
 			System.exit(1);
 		}
 		
-		if (host == null) {
-			System.err.println("Error: " + "Missing hostname");
-			System.exit(1);
+		
+		PhoneBillRestClient client = new PhoneBillRestClient(host, port);
+		
+		if (argc == 0) {
+			// get all phone calls
+			responseString = client.getPhoneBill(arguments[0], null, null);
+			
+			// read the file into phone bill
+			File file = new File("phonebilltempfile");
+			file.deleteOnExit();
+			
+			PrintWriter pw = new PrintWriter(file);
+			pw.print(responseString);
+			pw.close();
+			
+			bill = TextParser.parseFile(file);
+		}
+		else if (argc == 6) {
+			// search phone calls
+		}
+		else if (argc == 8) {
+			// add phone call
+			
 		}
 		
-		if (port == null) {
-			System.err.println("Error: " + "Missing port number");
-			System.exit(1);
-		}
-		
-		// 4. prints a description of the PhoneCall
+		// perform operation on arguemnts and options
 		for (int i = 0; i < options.size(); ++i) {
 			String option = options.get(i);
+			
+			// -print option
+			if (option.equals("print")) {
+				try {
+					newCall = createPhoneCallWithArguments(arguments);
+					bill = createPhoneBillWithArguments(arguments, newCall);
+				}
+				catch (IllegalArgumentException e) {
+					System.err.println("Error: " + e.getMessage());
+					System.exit(1);
+				}
+				
+				System.out.println("New Phone Call:");
+				System.out.println(newCall.toString());
+				System.exit(0);
+			}
+			
+			
+			// pretty-print all calls
+			if (option.equals("pretty")) {
+				// print to console
+				System.out.println(PrettyPrinter.constructPrettyOutput(bill));
+				
+			}
 			
 			if (option.equals("textFile")) {
 				try {
@@ -255,86 +301,6 @@ public class Project4 {
 	
 	
 	
-	public static void mainn(String... args) {
-		String hostName = null;
-		String portString = null;
-		String word = null;
-		String definition = null;
-		
-		for (String arg : args) {
-			if (hostName == null) {
-				hostName = arg;
-				
-			}
-			else if (portString == null) {
-				portString = arg;
-				
-			}
-			else if (word == null) {
-				word = arg;
-				
-			}
-			else if (definition == null) {
-				definition = arg;
-				
-			}
-			else {
-				usage("Extraneous command line argument: " + arg);
-			}
-		}
-		
-		if (hostName == null) {
-			usage(MISSING_ARGS);
-			
-		}
-		else if (portString == null) {
-			usage("Missing port");
-		}
-		
-		int port;
-		try {
-			port = Integer.parseInt(portString);
-			
-		}
-		catch (NumberFormatException ex) {
-			usage("Port \"" + portString + "\" must be an integer");
-			return;
-		}
-		
-		PhoneBillRestClient client = new PhoneBillRestClient(hostName, port);
-		
-		String message;
-		try {
-			if (word == null) {
-				// Print all word/definition pairs
-				Map<String, String> dictionary = client.getAllDictionaryEntries();
-				StringWriter sw = new StringWriter();
-				Messages.formatDictionaryEntries(new PrintWriter(sw, true), dictionary);
-				message = sw.toString();
-				
-			}
-			else if (definition == null) {
-				// Print all dictionary entries
-				message = Messages.formatDictionaryEntry(word, client.getDefinition(word));
-				
-			}
-			else {
-				// Post the word/definition pair
-				client.addDictionaryEntry(word, definition);
-				message = Messages.definedWordAs(word, definition);
-			}
-			
-		}
-		catch (IOException ex) {
-			outor("While contacting server: " + ex);
-			return;
-		}
-		
-		System.out.println(message);
-		
-		System.exit(0);
-	}
-	
 	/**
 	 * Makes sure that the give response has the expected HTTP status code
 	 * 
@@ -377,6 +343,6 @@ public class Project4 {
 		out.println("    -README       Prints a README for this project and exits");
 		out.println();
 		
-		System.exit(1);
+		System.exit(0);
 	}
 }
