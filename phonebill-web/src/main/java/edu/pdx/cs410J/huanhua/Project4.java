@@ -30,6 +30,7 @@ public class Project4 {
 	public static void main(String[] args) {
 		int argc = -1;
 		int requireArgc = 1;
+		int maxArgc = 9;
 		int passArgc = args.length;
 		LinkedList<String> options = new LinkedList<String>();
 		String arguments[] = new String[9];
@@ -92,7 +93,7 @@ public class Project4 {
 			else {
 				++argc;
 				
-				if (argc >= requireArgc) {
+				if (argc >= maxArgc) {
 					System.err.println("Error: " + "Too much arguments, need maximum " + requireArgc + " arguements");
 					System.exit(1);
 				}
@@ -100,6 +101,7 @@ public class Project4 {
 				arguments[argc] = arg;
 			}
 		}
+		
 		
 		// no option, 1 for customer name, or 9 for all parameters
 		if (requireArgc == 1 && (argc != 0 && argc != 8)) {
@@ -112,6 +114,14 @@ public class Project4 {
 			System.exit(1);
 		}
 		
+		if (host == null) {
+			System.err.println("Error: " + "Need a hostname.");
+			System.exit(1);
+		}
+		else if (port == -1) {
+			System.err.println("Error: " + "Need a port number.");
+			System.exit(1);
+		}
 		
 		PhoneBillRestClient client = new PhoneBillRestClient(host, port);
 		

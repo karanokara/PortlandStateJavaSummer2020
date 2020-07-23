@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
  * 
  */
 public class PhoneBillServlet extends HttpServlet {
-	static final String DEFINITION_PARAMETER = "definition";
 	
 	static final String CUSTOMER_PARAMETER = "customer";
 	static final String CALLER_PARAMETER = "callerNumber";
@@ -78,6 +77,7 @@ public class PhoneBillServlet extends HttpServlet {
 			}
 			catch (IllegalArgumentException e) {
 				invalidRequiredParameter(response, e.getMessage());
+				return;
 			}
 			
 			sendPhoneBill(response, customer, tempPhoneCall.getStartTime(), tempPhoneCall.getEndTime());
@@ -142,14 +142,58 @@ public class PhoneBillServlet extends HttpServlet {
 		}
 		catch (IllegalArgumentException e) {
 			invalidRequiredParameter(response, e.getMessage());
+			return;
 		}
 		
 		bill.addPhoneCall(call);
-		pw.println("Added a new PhoneCall to \"" + customer + "\" PhoneBill");
+		pw.println("Added a new PhoneCall to customer " + customer + "'s PhoneBill");
 		
 		pw.flush();
 		
 		response.setStatus(HttpServletResponse.SC_OK);
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Send a Phone Bill with filter by start and end time to the HTTP response.
+	 *
+	 * The text of the message is formatted with
+	 * {@link Messages#formatDictionaryEntry(String, String)}
+	 */
+	private void sendPhoneBill(HttpServletResponse response, String customer, Date start, Date end) throws IOException {
+		PhoneBill bill = this.dictionary.get(customer);
+		PrintWriter pw = response.getWriter();
+		
+		if (bill == null) {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Can't find customer \"" + customer + "\"");
+		}
+		else {
+			pw.println(TextDumper.formatOutput(bill, start, end));
+			response.setStatus(HttpServletResponse.SC_OK);
+		}
+		pw.flush();
+	}
+	
+	/**
+	 * Returns the value of the HTTP request parameter with the given name.
+	 *
+	 * @param request
+	 * @param name
+	 * @return <code>null</code> if the value of the parameter is
+	 *         <code>null</code> or is the empty string
+	 */
+	private String getParameter(HttpServletRequest request, String name) {
+		String value = request.getParameter(name);
+		if (value == null || "".equals(value)) {
+			return null;
+			
+		}
+		else {
+			return value;
+		}
 	}
 	
 	/**
@@ -182,45 +226,6 @@ public class PhoneBillServlet extends HttpServlet {
 		
 		// Error Status code (412)
 		response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, message);
-	}
-	
-	/**
-	 * Send a Phone Bill with filter by start and end time to the HTTP response.
-	 *
-	 * The text of the message is formatted with
-	 * {@link Messages#formatDictionaryEntry(String, String)}
-	 */
-	private void sendPhoneBill(HttpServletResponse response, String customer, Date start, Date end) throws IOException {
-		PhoneBill bill = this.dictionary.get(customer);
-		PrintWriter pw = response.getWriter();
-		
-		if (bill == null) {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND, "Can't find customer\"" + customer + "\"");
-		}
-		else {
-			pw.println(TextDumper.formatOutput(bill, start, end));
-			response.setStatus(HttpServletResponse.SC_OK);
-		}
-		pw.flush();
-	}
-	
-	/**
-	 * Returns the value of the HTTP request parameter with the given name.
-	 *
-	 * @param request
-	 * @param name
-	 * @return <code>null</code> if the value of the parameter is
-	 *         <code>null</code> or is the empty string
-	 */
-	private String getParameter(HttpServletRequest request, String name) {
-		String value = request.getParameter(name);
-		if (value == null || "".equals(value)) {
-			return null;
-			
-		}
-		else {
-			return value;
-		}
 	}
 	
 }

@@ -112,23 +112,6 @@ public class Project3IT extends InvokeMainTestCase {
 	}
 	
 	@Test
-	public void provideWithInvalidMonthArgWithNoOptionError() {
-		String name = "abc";
-		String phone1 = "111-111-1112";
-		String phone2 = "111-222-2222";
-		String date1 = "111/15/2020";
-		String time1 = "12:35";
-		String marker1 = "am";
-		String date2 = "1/15/2020";
-		String time2 = "12:33";
-		String marker2 = "Pm";
-		
-		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, date1, time1, marker1, date2, time2, marker2);
-		assertThat(result.getTextWrittenToStandardError(), containsString("Invalid month argument"));
-		assertThat(result.getExitCode(), equalTo(1));
-	}
-	
-	@Test
 	public void provideWithUnSupportedOptionHasError1() {
 		String option = "-abc";
 		String name = "abc";
@@ -165,6 +148,23 @@ public class Project3IT extends InvokeMainTestCase {
 		assertThat(result.getTextWrittenToStandardError(), containsString("Using unsupported option: " + option1));
 		assertThat(result.getExitCode(), equalTo(1));
 		
+	}
+	
+	@Test
+	public void provideWithInvalidMonthArgWithNoOptionError() {
+		String name = "abc";
+		String phone1 = "111-111-1112";
+		String phone2 = "111-222-2222";
+		String date1 = "111/15/2020";
+		String time1 = "12:35";
+		String marker1 = "am";
+		String date2 = "1/15/2020";
+		String time2 = "12:33";
+		String marker2 = "Pm";
+		
+		MainMethodResult result = invokeMain(Project3.class, name, phone1, phone2, date1, time1, marker1, date2, time2, marker2);
+		assertThat(result.getTextWrittenToStandardError(), containsString("Invalid month argument"));
+		assertThat(result.getExitCode(), equalTo(1));
 	}
 	
 	@Test
