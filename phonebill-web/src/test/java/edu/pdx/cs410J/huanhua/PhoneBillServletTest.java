@@ -72,6 +72,34 @@ public class PhoneBillServletTest {
 	}
 	
 	@Test
+	public void aGetNoCustomerFoundInvalidSearch() throws ServletException, IOException {
+//		PhoneBillServlet servlet = new PhoneBillServlet();
+		String customer = "abc";
+		String date1 = "1/152020";
+		String time1 = "12:45";
+		String marker1 = "am";
+		String date2 = "1/15/2020";
+		String time2 = "12:59";
+		String marker2 = "Pm";
+		
+		HttpServletRequest request = mock(HttpServletRequest.class);
+		HttpServletResponse response = mock(HttpServletResponse.class);
+		PrintWriter pw = mock(PrintWriter.class);
+		
+		when(response.getWriter()).thenReturn(pw);
+		when(request.getParameter(CUSTOMER_PARAMETER)).thenReturn(customer);
+		when(request.getParameter(STARTDATETIME_PARAMETER)).thenReturn(date1 + " " + time1 + " " + marker1);
+		when(request.getParameter(ENDDATETIME_PARAMETER)).thenReturn(date2 + " " + time2 + " " + marker2);
+		
+		servlet.doGet(request, response);
+		
+		verify(response).sendError(HttpServletResponse.SC_PRECONDITION_FAILED, "Required parameters error");
+//		verify(response).setStatus(HttpServletResponse.SC_PRECONDITION_FAILED);
+//		verify(pw).println();
+	}
+	
+	
+	@Test
 	public void aPostMissArgPhoneBill1() throws ServletException, IOException {
 //		PhoneBillServlet servlet = new PhoneBillServlet();
 	
