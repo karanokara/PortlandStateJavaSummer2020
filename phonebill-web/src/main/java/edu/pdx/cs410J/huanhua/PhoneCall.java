@@ -27,10 +27,22 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable<PhoneCall
 	
 	private Date endTime;
 	
+	/**
+	 * create an empty phone call
+	 */
 	public PhoneCall() {
 		
 	}
 	
+	/**
+	 * create a phone call
+	 * 
+	 * @param callerPhone
+	 * @param calleePhone
+	 * @param startTime
+	 * @param endTime
+	 * @throws IllegalArgumentException
+	 */
 	public PhoneCall(String callerPhone, String calleePhone, String startTime, String endTime) throws IllegalArgumentException {
 		this.callerPhoneNumber = validatePhone(callerPhone);
 		this.calleePhoneNumber = validatePhone(calleePhone);

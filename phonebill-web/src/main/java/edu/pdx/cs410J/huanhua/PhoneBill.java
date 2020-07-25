@@ -26,6 +26,12 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> {
 		}
 	}
 	
+	/**
+	 * Create a PhoneBill obj with a customer name
+	 * 
+	 * @param customer
+	 * @throws IllegalArgumentException
+	 */
 	public PhoneBill(String customer) throws IllegalArgumentException {
 		if (customer == null || customer.isEmpty()) {
 			throw new IllegalArgumentException("Customer name is invalid");

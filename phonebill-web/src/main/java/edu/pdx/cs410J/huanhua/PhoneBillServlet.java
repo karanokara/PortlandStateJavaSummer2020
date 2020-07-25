@@ -153,10 +153,6 @@ public class PhoneBillServlet extends HttpServlet {
 		response.setStatus(HttpServletResponse.SC_OK);
 	}
 	
-	
-	
-	
-	
 	/**
 	 * Send a Phone Bill with filter by start and end time to the HTTP response.
 	 *

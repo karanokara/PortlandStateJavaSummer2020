@@ -15,6 +15,9 @@ import java.util.List;
  * Goals:
  * Write a web application in Java
  * Work with HTTP-based network communication
+ * 
+ * @author KANRA
+ *
  */
 public class Project4 {
 	

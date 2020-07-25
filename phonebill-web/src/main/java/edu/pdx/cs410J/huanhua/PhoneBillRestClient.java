@@ -119,7 +119,12 @@ public class PhoneBillRestClient extends HttpRequestHelper {
 		return response;
 	}
 	
-	
+	/**
+	 * An exception throw for reporting error Http status code
+	 * 
+	 * @author KANRA
+	 *
+	 */
 	class PhoneBillRestException extends RuntimeException {
 		PhoneBillRestException(int httpStatusCode, String description) {
 			super("HTTP Status Code " + httpStatusCode + ": " + description);
