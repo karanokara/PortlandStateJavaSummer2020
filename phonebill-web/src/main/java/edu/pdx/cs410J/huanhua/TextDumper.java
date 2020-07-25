@@ -76,7 +76,7 @@ public class TextDumper implements PhoneBillDumper<PhoneBill> {
 			Date callEnDate = call.getEndTime();
 			
 			// filter by start and end Date if provide
-			if ((start != null && end != null && callStartDate.after(start) && callStartDate.before(end)) || (start == null && end == null)) {
+			if ((start != null && end != null && callStartDate.compareTo(start) >= 0 && callStartDate.compareTo(end) <= 0) || (start == null && end == null)) {
 				reString += call.getCaller() + "..." + call.getCallee() + "..." + dateFormat.format(callStartDate) + "..." + dateFormat.format(callEnDate) + "\n";
 			}
 		}
