@@ -163,6 +163,9 @@
           <archive>
             <manifest>
               <mainClass>edu.pdx.cs410J.huanhua.Project4</mainClass>
+                <addClasspath>true</addClasspath>
+              <classpathLayoutType>repository</classpathLayoutType>
+              <classpathPrefix>${user.home}/.m2/repository</classpathPrefix>
             </manifest>
           </archive>
         </configuration>

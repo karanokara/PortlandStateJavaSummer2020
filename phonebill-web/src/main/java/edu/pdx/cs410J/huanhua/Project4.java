@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.pdx.cs410J.web.HttpRequestHelper;
-
 
 /**
  * The main class that parses the command line and communicates with the
@@ -81,7 +79,8 @@ public class Project4 {
 				else if (option.equals("search")) {
 					requireArgc = 7;
 				}
-				else if (!supportOptionslist.contains(option)) {
+				
+				if (!supportOptionslist.contains(option)) {
 					System.err.println("Error: " + "Using unsupported option: -" + option);
 					System.exit(1);
 				}
@@ -109,8 +108,8 @@ public class Project4 {
 			System.exit(1);
 		}
 		// with option, need exact # of args
-		else if (argc != (requireArgc - 1)) {
-			System.err.println("Error: " + "Wrong number of arguments, need " + requireArgc + " arguements.");
+		else if ((requireArgc != 1) && (argc != (requireArgc - 1))) {
+			System.err.println("Error: " + "Wrong number of arguments, need " + requireArgc + " arguments for using option.");
 			System.exit(1);
 		}
 		
@@ -158,7 +157,8 @@ public class Project4 {
 			// get and search will do pretty print
 			options.add("pretty");
 		}
-		else if (argc == 8) {
+//		else if (argc == 8) {
+		else {
 			try {
 				// add phone call
 				responseString = client.postPhoneBill(arguments[0], arguments[1], arguments[2], arguments[3] + " " + arguments[4] + " " + arguments[5], arguments[6] + " " + arguments[7] + " " + arguments[8]);
@@ -244,29 +244,6 @@ public class Project4 {
 		PhoneCall call = new PhoneCall(callerNumber, calleeNumber, startDateTime, endDateTime);
 		
 		return call;
-	}
-	
-	
-	
-	/**
-	 * Makes sure that the give response has the expected HTTP status code
-	 * 
-	 * @param code
-	 *            The expected status code
-	 * @param response
-	 *            The response from the server
-	 */
-	private static void checkResponseCode(int code, HttpRequestHelper.Response response) {
-		if (response.getCode() != code) {
-			outor(String.format("Expected HTTP code %d, got code %d.\n\n%s", code, response.getCode(), response.getContent()));
-		}
-	}
-	
-	private static void outor(String message) {
-		PrintStream out = System.out;
-		out.println("** " + message);
-		
-		System.exit(1);
 	}
 	
 	/**

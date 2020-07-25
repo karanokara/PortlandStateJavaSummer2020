@@ -522,6 +522,7 @@ public class Project3IT extends InvokeMainTestCase {
 		assertThat(result.getTextWrittenToStandardError(), containsString(prettyFilename));
 		assertThat(result.getTextWrittenToStandardError(), containsString("Error"));
 	}
+	
 	// ------------------------------- Success Tests ------------------------------------- //
 	
 	@Test

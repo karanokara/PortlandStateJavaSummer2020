@@ -93,11 +93,14 @@ public class PhoneBillServletTest {
 		
 		servlet.doGet(request, response);
 		
-		verify(response).sendError(HttpServletResponse.SC_PRECONDITION_FAILED, "Required parameters error");
-//		verify(response).setStatus(HttpServletResponse.SC_PRECONDITION_FAILED);
-//		verify(pw).println();
+		ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
+		ArgumentCaptor<Integer> statusCode = ArgumentCaptor.forClass(Integer.class);
+		
+		verify(response).sendError(statusCode.capture(), msg.capture());
+		
+		assertThat(msg.getValue(), containsString("Required parameters error"));
+		assertThat(statusCode.getValue(), equalTo(HttpServletResponse.SC_PRECONDITION_FAILED));
 	}
-	
 	
 	@Test
 	public void aPostMissArgPhoneBill1() throws ServletException, IOException {
