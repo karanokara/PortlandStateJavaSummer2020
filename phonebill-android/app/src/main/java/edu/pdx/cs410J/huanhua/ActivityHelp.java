@@ -1,10 +1,9 @@
 package edu.pdx.cs410J.huanhua;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ActivityHelp extends AppCompatActivity {
 
@@ -16,6 +15,9 @@ public class ActivityHelp extends AppCompatActivity {
         TextView view = findViewById(R.id.activity_help_view);
 
         view.setText("This is a README.");
+
+        // go back to main activity
+        // finishActivity(11);
 
     }
 }

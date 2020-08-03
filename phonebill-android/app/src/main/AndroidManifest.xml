@@ -9,7 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityHelp"></activity>
+        <activity
+            android:name=".ActivityHelp"
+            android:label="@string/help"
+            android:parentActivityName=".ActivityMain">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityMain" />
+        </activity>
         <activity
             android:name=".ActivityMain"
             android:label="@string/app_name"

@@ -1,17 +1,17 @@
 package edu.pdx.cs410J.huanhua;
 
+import android.content.Intent;
 import android.os.Bundle;
-
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.view.Menu;
-import android.view.MenuItem;
-
-import edu.pdx.cs410J.huanhua.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -26,14 +26,19 @@ public class ActivityMain extends AppCompatActivity {
 
 
         // a button floating on the screen
-        // FloatingActionButton fab = findViewById(R.id.fab);
-        // fab.setOnClickListener(new View.OnClickListener() {
-        //     @Override
-        //     public void onClick(View view) {
-        //         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-        //                 .setAction("Action", null).show();
-        //     }
-        // });
+        FloatingActionButton fab = findViewById(R.id.button_help);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //         .setAction("Action", null).show();
+
+                // go to help activity
+                Intent intent = new Intent(ActivityMain.this, ActivityHelp.class);
+                // startActivity(intent);
+                startActivityForResult(intent, 11);
+            }
+        });
     }
 
     /**
