@@ -11,7 +11,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import edu.pdx.cs410J.huanhua.R;
 
-public class FragmentFirst extends Fragment {
+public class FragmentMain extends Fragment {
 
     /**
      * Inflate the layout for this fragment
@@ -25,7 +25,7 @@ public class FragmentFirst extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
-        return inflater.inflate(R.layout.fragment_first, container, false);
+        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
     /**
@@ -37,11 +37,19 @@ public class FragmentFirst extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button_create_phone_bill).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(FragmentFirst.this)
-                        .navigate(R.id.action_FirstFragment_to_HelpFragment);
+                NavHostFragment.findNavController(FragmentMain.this)
+                        .navigate(R.id.action_main_to_create);
+            }
+        });
+
+        view.findViewById(R.id.button_enter_phone_call).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(FragmentMain.this)
+                        .navigate(R.id.action_main_to_enter);
             }
         });
     }

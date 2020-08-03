@@ -3,22 +3,17 @@ package edu.pdx.cs410J.huanhua;
 import android.os.Bundle;
 
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-
-import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
 
 import edu.pdx.cs410J.huanhua.R;
 
-public class MainActivity extends AppCompatActivity {
+public class ActivityMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +26,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         // a button floating on the screen
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        // FloatingActionButton fab = findViewById(R.id.fab);
+        // fab.setOnClickListener(new View.OnClickListener() {
+        //     @Override
+        //     public void onClick(View view) {
+        //         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+        //                 .setAction("Action", null).show();
+        //     }
+        // });
     }
 
     /**
@@ -74,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
             // List<Fragment> f = getSupportFragmentManager().getFragments();
             NavHostFragment.findNavController(ff)
-                    .navigate(R.id.action_FirstFragment_to_HelpFragment);
+                    .navigate(R.id.action_main_to_create);
 
 
             return true;
