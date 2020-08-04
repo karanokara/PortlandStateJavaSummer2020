@@ -47,10 +47,9 @@ public class FragmentCreatePhoneBill extends Fragment {
                     return;
                 }
 
-
                 // go to enter phone call fragment
                 NavHostFragment.findNavController(FragmentCreatePhoneBill.this)
-                        .navigate(R.id.action_create_to_main);
+                        .navigate(R.id.action_create_to_enter);
             }
         });
     }

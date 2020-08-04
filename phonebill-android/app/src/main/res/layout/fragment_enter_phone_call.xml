@@ -9,13 +9,136 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <RadioGroup
+        android:id="@+id/input_end_marker"
+        android:layout_width="58dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/input_end_time"
+        app:layout_constraintTop_toBottomOf="@+id/input_start_marker">
+
+        <RadioButton
+            android:id="@+id/input_end_am"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/am" />
+
+        <RadioButton
+            android:id="@+id/input_end_pm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pm" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/end"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <EditText
+        android:id="@+id/input_end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="66dp"
+        android:layout_marginTop="28dp"
+        android:ems="5"
+        android:hint="@string/date"
+        android:inputType="date"
+        android:textSize="@dimen/font_size"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/input_start_date" />
+
+    <EditText
+        android:id="@+id/input_end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:ems="5"
+        android:hint="@string/time"
+        android:inputType="time"
+        android:textSize="@dimen/font_size"
+        app:layout_constraintStart_toEndOf="@+id/input_end_date"
+        app:layout_constraintTop_toBottomOf="@+id/input_start_time" />
+
+    <EditText
+        android:id="@+id/input_start_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="58dp"
+        android:layout_marginTop="28dp"
+        android:ems="5"
+        android:hint="@string/date"
+        android:inputType="date"
+        android:textSize="@dimen/font_size"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/input_callee" />
+
+    <EditText
+        android:id="@+id/input_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="28dp"
+        android:ems="5"
+        android:hint="@string/time"
+        android:inputType="time"
+        android:textSize="@dimen/font_size"
+        app:layout_constraintStart_toEndOf="@+id/input_start_date"
+        app:layout_constraintTop_toBottomOf="@+id/input_callee" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/start"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <EditText
+        android:id="@+id/input_callee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:ems="10"
+        android:hint="@string/phone_format"
+        android:inputType="phone"
+        android:textSize="@dimen/font_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/input_caller" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/callee"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
     <TextView
         android:id="@+id/textView"
-        android:layout_width="131dp"
-        android:layout_height="17dp"
-        android:layout_marginTop="124dp"
-        android:text="phonecall"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="72dp"
+        android:text="@string/caller"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,10 +146,47 @@
         android:id="@+id/button_phone_call_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/submit"
+        android:text="@string/enter_phone_call"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/input_end_date" />
+
+    <EditText
+        android:id="@+id/input_caller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:hint="@string/phone_format"
+        android:inputType="phone"
+        android:textSize="@dimen/font_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/input_start_marker"
+        android:layout_width="58dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/input_start_time"
+        app:layout_constraintTop_toBottomOf="@+id/input_callee">
+
+        <RadioButton
+            android:id="@+id/input_start_am"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/am" />
+
+        <RadioButton
+            android:id="@+id/input_start_pm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pm" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
