@@ -53,31 +53,38 @@ public class FragmentCreatePhoneBill extends Fragment {
         view.findViewById(R.id.button_phone_bill_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View viewClick) {
-                // create phone bill
-                String customer = customerText.getText().toString();
-                PhoneBill bill = null;
-
-                try {
-                    bill = new PhoneBill(customer);
-                } catch (IllegalArgumentException e) {
-                    Snackbar.make(thisView, e.getMessage(), 5000)
-                            .setAction("Action", null).show();
-                    return;
-                }
-
-                // prepare data to send to another fragment
-                Bundle bundle = new Bundle();
-                // bundle.putString("customer", customer);
-                bundle.putSerializable("bill", bill);
-
-
-                // go to enter phone call fragment
-                NavHostFragment.findNavController(FragmentCreatePhoneBill.this)
-                        .navigate(R.id.action_create_to_enter, bundle);
-
-                Snackbar.make(thisView, "Created a Phone Bill for \"" + customer + "\".", 5000)
-                        .setAction("Action", null).show();
+                handleOnCreate();
             }
         });
+    }
+
+    /**
+     * handle event when click create phone bill btn
+     */
+    private void handleOnCreate() {
+        // create phone bill
+        String customer = customerText.getText().toString();
+        PhoneBill bill = null;
+
+        try {
+            bill = new PhoneBill(customer);
+        } catch (IllegalArgumentException e) {
+            Snackbar.make(thisView, e.getMessage(), 5000)
+                    .setAction("Action", null).show();
+            return;
+        }
+
+        // prepare data to send to another fragment
+        Bundle bundle = new Bundle();
+        // bundle.putString("customer", customer);
+        bundle.putSerializable("bill", bill);
+
+
+        // go to enter phone call fragment
+        NavHostFragment.findNavController(FragmentCreatePhoneBill.this)
+                .navigate(R.id.action_create_to_enter, bundle);
+
+        Snackbar.make(thisView, "Created a Phone Bill for \"" + customer + "\".", 5000)
+                .setAction("Action", null).show();
     }
 }
