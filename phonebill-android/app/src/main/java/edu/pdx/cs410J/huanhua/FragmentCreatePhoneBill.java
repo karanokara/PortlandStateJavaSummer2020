@@ -56,6 +56,22 @@ public class FragmentCreatePhoneBill extends Fragment {
                 handleOnCreate();
             }
         });
+
+        // when click go back
+        view.findViewById(R.id.button_go_back_create_fragment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleGoBack();
+            }
+        });
+    }
+
+    /**
+     * handle when click enter phone call
+     */
+    private void handleGoBack() {
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_create_to_main);
     }
 
     /**

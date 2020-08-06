@@ -9,6 +9,8 @@
     <string name="enter_phone_call">Enter Phone Call</string>
     <string name="print_phone_bill">Print Phone Bill</string>
 
+    <string name="go_back">Go Back</string>
+
 
     <string name="search_phone_call">Search Phone Calls</string>
     <string name="readme">This is a README.</string>

@@ -8,8 +8,6 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -66,14 +64,17 @@ public class ActivityMain extends AppCompatActivity {
 
         // noinspection SimplifiableIfStatement
         if (id == R.id.action_help) {
-            // get current shown fragment in this activity
-            Fragment ff = getSupportFragmentManager().getPrimaryNavigationFragment();
+            // // get current shown fragment in this activity
+            // Fragment ff = getSupportFragmentManager().getPrimaryNavigationFragment();
+            //
+            // NavHostFragment.findNavController(ff)
+            //         .navigate(R.id.action_main_to_create);
 
+            // go to help activity
+            Intent intent = new Intent(ActivityMain.this, ActivityHelp.class);
 
-            // List<Fragment> f = getSupportFragmentManager().getFragments();
-            NavHostFragment.findNavController(ff)
-                    .navigate(R.id.action_main_to_create);
-
+            // startActivity(intent);
+            startActivityForResult(intent, 11);
 
             return true;
         }

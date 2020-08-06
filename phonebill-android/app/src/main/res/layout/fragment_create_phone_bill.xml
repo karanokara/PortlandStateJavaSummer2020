@@ -10,21 +10,34 @@
         android:id="@+id/textview_second"
         android:layout_width="213dp"
         android:layout_height="19dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="60dp"
         android:text="@string/ask_enter_customer_name"
+        android:textSize="@dimen/font_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/button_go_back_create_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/go_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_phone_bill_submit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_customer" />
+
+    <Button
         android:id="@+id/button_phone_bill_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
         android:text="@string/create_phone_bill"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_go_back_create_fragment"
         app:layout_constraintTop_toBottomOf="@+id/input_customer" />
 
     <EditText

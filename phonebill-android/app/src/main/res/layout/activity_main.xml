@@ -9,14 +9,16 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FFFFFF"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:background="#FFFFFF"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:titleTextColor="#000000" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -24,26 +26,14 @@
         android:id="@+id/content_main_layout"
         layout="@layout/content_main" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="25dp"
-        android:elevation="16dp"
-        android:text="@string/help"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_help"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="10dp"
+        android:layout_margin="20dp"
         android:clickable="true"
-        android:src="@android:color/transparent"
-        app:backgroundTint="#373737" />
+        android:src="@drawable/help_text"
+        app:backgroundTint="#F3DEDE" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

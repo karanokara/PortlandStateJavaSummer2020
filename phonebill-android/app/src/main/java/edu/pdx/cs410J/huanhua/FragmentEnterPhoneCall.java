@@ -67,12 +67,30 @@ public class FragmentEnterPhoneCall extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // when click add phone call
         view.findViewById(R.id.button_phone_call_submit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 handleOnEnter();
             }
         });
+
+        // when click go back
+        view.findViewById(R.id.button_go_back_enter_fragment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleGoBack();
+            }
+        });
+    }
+
+
+    /**
+     * handle when click enter phone call
+     */
+    private void handleGoBack() {
+        NavHostFragment.findNavController(FragmentEnterPhoneCall.this)
+                .navigate(R.id.action_enter_to_main);
     }
 
     /**
