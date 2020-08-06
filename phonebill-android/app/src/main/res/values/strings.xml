@@ -8,6 +8,7 @@
     <string name="create_phone_bill">Create Phone Bill</string>
     <string name="enter_phone_call">Enter Phone Call</string>
     <string name="print_phone_bill">Print Phone Bill</string>
+    <string name="search_phone_bill">Search Phone Bill</string>
 
     <string name="go_back">Go Back</string>
 

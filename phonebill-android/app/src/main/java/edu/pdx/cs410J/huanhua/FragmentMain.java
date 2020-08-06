@@ -9,8 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import edu.pdx.cs410J.huanhua.R;
-
 public class FragmentMain extends Fragment {
 
     /**
@@ -50,6 +48,14 @@ public class FragmentMain extends Fragment {
             public void onClick(View view) {
                 NavHostFragment.findNavController(FragmentMain.this)
                         .navigate(R.id.action_main_to_enter);
+            }
+        });
+
+        view.findViewById(R.id.button_print_phone_bill).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(FragmentMain.this)
+                        .navigate(R.id.action_FragmentMain_to_FragmentPrintBill);
             }
         });
     }

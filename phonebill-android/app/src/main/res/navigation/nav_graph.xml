@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_main_to_enter"
             app:destination="@id/FragmentEnterPhoneCall" />
+        <action
+            android:id="@+id/action_FragmentMain_to_FragmentPrintBill"
+            app:destination="@id/FragmentPrintBill" />
     </fragment>
     <fragment
         android:id="@+id/FragmentCreatePhoneBill"
@@ -39,5 +42,26 @@
         <action
             android:id="@+id/action_enter_to_main"
             app:destination="@id/FragmentMain" />
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentPrintBill"
+        android:name="edu.pdx.cs410J.huanhua.FragmentPrintBill"
+        android:label="fragment_print_bill"
+        tools:layout="@layout/fragment_print_bill" >
+        <action
+            android:id="@+id/action_FragmentPrintBill_to_FragmentPrintBillResult"
+            app:destination="@id/FragmentPrintBillResult" />
+        <action
+            android:id="@+id/action_FragmentPrintBill_to_FragmentMain"
+            app:destination="@id/FragmentMain" />
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentPrintBillResult"
+        android:name="edu.pdx.cs410J.huanhua.FragmentPrintBillResult"
+        android:label="fragment_print_bill_result"
+        tools:layout="@layout/fragment_print_bill_result" >
+        <action
+            android:id="@+id/action_FragmentPrintBillResult_to_FragmentPrintBill"
+            app:destination="@id/FragmentPrintBill" />
     </fragment>
 </navigation>

@@ -43,6 +43,7 @@ public class ActivityHelp extends AppCompatActivity {
                     .setAction("Action", null).show();
         }
 
+        content += "\n";
         view.setText(content);
         // go back to main activity
         // finishActivity(11);
