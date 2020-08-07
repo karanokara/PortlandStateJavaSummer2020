@@ -19,7 +19,7 @@ public class PhoneBill extends AbstractPhoneBill<PhoneCall> implements Serializa
     private Collection<PhoneCall> phoneCalls;        // Collection is an Interface, need an implemented class
 
     // a comparator for comparing 2 PhoneCall
-    static class phoneCallComparator implements Comparator<PhoneCall> {
+    static class phoneCallComparator implements Comparator<PhoneCall>, Serializable {
         public int compare(PhoneCall o1, PhoneCall o2) {
             // sort by small to large, earliest to latest
             return o1.compareTo(o2);

@@ -91,7 +91,7 @@ public class FragmentEnterPhoneCall extends Fragment {
      */
     private void handleGoBack() {
         NavHostFragment.findNavController(FragmentEnterPhoneCall.this)
-                .navigate(R.id.action_enter_to_main);
+                .navigate(R.id.action_FragmentEnterPhoneCall_to_FragmentMain);
     }
 
     /**
@@ -198,10 +198,15 @@ public class FragmentEnterPhoneCall extends Fragment {
             return;
         }
 
+        // prepare data to send to another fragment
+        Bundle bundle = new Bundle();
+        // bundle.putString("customer", customer);
+        bundle.putSerializable("call", call);
+
         Snackbar.make(thisView, "Add a phone call for \"" + bill.getCustomer() + "\" successfully.", 5000)
                 .setAction("Action", null).show();
 
         NavHostFragment.findNavController(FragmentEnterPhoneCall.this)
-                .navigate(R.id.action_enter_to_main);
+                .navigate(R.id.action_enter_to_result, bundle);
     }
 }

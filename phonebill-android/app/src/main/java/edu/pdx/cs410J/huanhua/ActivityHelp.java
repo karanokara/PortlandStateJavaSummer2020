@@ -37,7 +37,8 @@ public class ActivityHelp extends AppCompatActivity {
                 content += line + "\n";
                 line = br.readLine();
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // using any view inside this activity
             Snackbar.make(view, e.getMessage(), 5000)
                     .setAction("Action", null).show();
@@ -45,8 +46,21 @@ public class ActivityHelp extends AppCompatActivity {
 
         content += "\n";
         view.setText(content);
+
         // go back to main activity
         // finishActivity(11);
+        // Specify in manifest:
+        /**
+         * <activity
+         *             android:name=".ActivityHelp"
+         *             android:label="@string/readme"
+         *             android:parentActivityName=".ActivityMain">      <-- here
+         *
+         */
 
+        // TO DO
+        // after bill is serialized, there crash
+        // done
+        // all class, obj, need to implement Serializable
     }
 }

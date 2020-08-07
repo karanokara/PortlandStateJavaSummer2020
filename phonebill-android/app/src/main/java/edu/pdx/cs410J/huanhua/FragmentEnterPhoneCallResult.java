@@ -11,11 +11,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 /**
- * A simple
+ * A simple {@link Fragment} subclass.
+ * Use the {@link FragmentEnterPhoneCallResult#newInstance} factory method to
+ * create an instance of this fragment.
  */
-public class FragmentPrintBillResult extends Fragment {
+public class FragmentEnterPhoneCallResult extends Fragment {
 
-    private View thisView = null;
+    private View thisView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,16 +29,15 @@ public class FragmentPrintBillResult extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        thisView = inflater.inflate(R.layout.fragment_print_bill_result, container, false);
+        thisView = inflater.inflate(R.layout.fragment_enter_phone_call_result, container, false);
         TextView viewPrint = thisView.findViewById(R.id.view_print_enter_call);
 
         Bundle bundle = this.getArguments();
 
         if (bundle != null) {
-            PhoneBill bill = (PhoneBill) bundle.getSerializable("bill");
-            String prettyString = PrettyPrinter.constructPrettyOutput(bill, null, null);
+            PhoneCall call = (PhoneCall) bundle.getSerializable("call");
 
-            viewPrint.setText(prettyString);
+            viewPrint.setText(call.toString());
         } else {
             viewPrint.setText("No result.");
         }
@@ -53,16 +54,8 @@ public class FragmentPrintBillResult extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // when click go back
-        view.findViewById(R.id.button_enter_result_go_back_home).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                handleGoBack();
-            }
-        });
-
         // when click go back home
-        view.findViewById(R.id.button_print_reuslt_go_back_home).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.button_enter_result_go_back_home).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 handleGoBackHome();
@@ -73,16 +66,9 @@ public class FragmentPrintBillResult extends Fragment {
     /**
      * handle event when click go back
      */
-    private void handleGoBack() {
-        NavHostFragment.findNavController(this)
-                .navigate(R.id.action_FragmentPrintBillResult_to_FragmentPrintBill);
-    }
-
-    /**
-     * handle event when click go back
-     */
     private void handleGoBackHome() {
         NavHostFragment.findNavController(this)
-                .navigate(R.id.action_FragmentPrintBillResult_to_FragmentMain);
+                .navigate(R.id.action_fragmentEnterPhoneCallResult_to_FragmentMain);
     }
+
 }

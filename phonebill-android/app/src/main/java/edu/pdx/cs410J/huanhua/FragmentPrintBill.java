@@ -21,7 +21,7 @@ import edu.pdx.cs410J.ParserException;
  */
 public class FragmentPrintBill extends Fragment {
 
-    View thisView = null;
+    private View thisView = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

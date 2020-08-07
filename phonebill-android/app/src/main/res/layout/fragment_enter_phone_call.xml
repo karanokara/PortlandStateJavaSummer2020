@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="edu.pdx.cs410J.huanhua.FragmentEnterPhoneCall">
 
-    <!-- TODO: Update blank fragment layout -->
 
     <RadioGroup
         android:id="@+id/input_end_marker"

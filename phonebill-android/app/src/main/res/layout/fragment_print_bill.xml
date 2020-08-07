@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".FragmentPrintBill">
 
-    <!-- TODO: Update blank fragment layout -->
     <Button
         android:id="@+id/button_phone_bill_search"
         android:layout_width="wrap_content"

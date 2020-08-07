@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_FragmentMain_to_FragmentPrintBill"
             app:destination="@id/FragmentPrintBill" />
+        <action
+            android:id="@+id/action_FragmentMain_to_FragmentPrintBillResult"
+            app:destination="@id/FragmentPrintBillResult" />
     </fragment>
     <fragment
         android:id="@+id/FragmentCreatePhoneBill"
@@ -40,14 +43,17 @@
         android:label="Fragment_enter_phone_call"
         tools:layout="@layout/fragment_enter_phone_call">
         <action
-            android:id="@+id/action_enter_to_main"
+            android:id="@+id/action_enter_to_result"
+            app:destination="@id/fragmentEnterPhoneCallResult" />
+        <action
+            android:id="@+id/action_FragmentEnterPhoneCall_to_FragmentMain"
             app:destination="@id/FragmentMain" />
     </fragment>
     <fragment
         android:id="@+id/FragmentPrintBill"
         android:name="edu.pdx.cs410J.huanhua.FragmentPrintBill"
         android:label="fragment_print_bill"
-        tools:layout="@layout/fragment_print_bill" >
+        tools:layout="@layout/fragment_print_bill">
         <action
             android:id="@+id/action_FragmentPrintBill_to_FragmentPrintBillResult"
             app:destination="@id/FragmentPrintBillResult" />
@@ -59,9 +65,21 @@
         android:id="@+id/FragmentPrintBillResult"
         android:name="edu.pdx.cs410J.huanhua.FragmentPrintBillResult"
         android:label="fragment_print_bill_result"
-        tools:layout="@layout/fragment_print_bill_result" >
+        tools:layout="@layout/fragment_print_bill_result">
         <action
             android:id="@+id/action_FragmentPrintBillResult_to_FragmentPrintBill"
             app:destination="@id/FragmentPrintBill" />
+        <action
+            android:id="@+id/action_FragmentPrintBillResult_to_FragmentMain"
+            app:destination="@id/FragmentMain" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentEnterPhoneCallResult"
+        android:name="edu.pdx.cs410J.huanhua.FragmentEnterPhoneCallResult"
+        android:label="fragment_enter_phone_call_result"
+        tools:layout="@layout/fragment_enter_phone_call_result">
+        <action
+            android:id="@+id/action_fragmentEnterPhoneCallResult_to_FragmentMain"
+            app:destination="@id/FragmentMain" />
     </fragment>
 </navigation>

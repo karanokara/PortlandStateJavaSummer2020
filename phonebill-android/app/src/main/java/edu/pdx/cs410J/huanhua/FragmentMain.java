@@ -58,5 +58,13 @@ public class FragmentMain extends Fragment {
                         .navigate(R.id.action_FragmentMain_to_FragmentPrintBill);
             }
         });
+
+        view.findViewById(R.id.button_search_phone_call).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NavHostFragment.findNavController(FragmentMain.this)
+                        .navigate(R.id.action_FragmentMain_to_FragmentPrintBillResult);
+            }
+        });
     }
 }
