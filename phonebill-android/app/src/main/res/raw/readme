@@ -1,0 +1,14 @@
+A Small Device Application for a Phone Bill.
+
+In this project, use Android to implement a small device application for your Phone Bill application.
+
+Goal: Gain experience writing a complex small device user interface with Android.
+
+For this project, write an application using Android that has all of the functionality of the previous assignments: creating a phone bill, entering calls, pretty printing a phone bill and its calls, searching for calls, etc.
+
+The user interface should provide a "Help" menu with a "README" menu item that displays the information for the README.
+
+Error handling: If something goes wrong (for example, the user provides malformed input, your user interface should pop up a dialog box that describes the error. Note that pop up dialogs should be used for conveying small pieces of information. Please refrain from using pop ups for displaying the contents of a phone bill.
+
+This project gives you the opportunity to explore the tools that Android provides. I encourage you to use your imagination and creativity when designing your user interface.
+

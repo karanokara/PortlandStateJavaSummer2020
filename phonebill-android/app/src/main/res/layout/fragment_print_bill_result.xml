@@ -34,7 +34,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="30dp"
-                android:text="jfidsjafoj oijfoij odsjfao josdija ofijao ijdfoj oaisdjfo joas jfoisaj ojs"
                 android:textSize="@dimen/font_size" />
         </LinearLayout>
     </ScrollView>

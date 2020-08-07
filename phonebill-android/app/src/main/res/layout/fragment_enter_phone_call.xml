@@ -51,6 +51,7 @@
         android:ems="5"
         android:hint="@string/date"
         android:inputType="date"
+        android:text="12/1/20"
         android:textSize="@dimen/font_size"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/input_start_date" />
@@ -64,6 +65,7 @@
         android:ems="5"
         android:hint="@string/time"
         android:inputType="time"
+        android:text="12:08"
         android:textSize="@dimen/font_size"
         app:layout_constraintStart_toEndOf="@+id/input_end_date"
         app:layout_constraintTop_toBottomOf="@+id/input_start_time" />
@@ -77,6 +79,7 @@
         android:ems="5"
         android:hint="@string/date"
         android:inputType="date"
+        android:text="12/1/20"
         android:textSize="@dimen/font_size"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/input_callee" />
@@ -90,6 +93,7 @@
         android:ems="5"
         android:hint="@string/time"
         android:inputType="time"
+        android:text="12:05"
         android:textSize="@dimen/font_size"
         app:layout_constraintStart_toEndOf="@+id/input_start_date"
         app:layout_constraintTop_toBottomOf="@+id/input_callee" />
@@ -113,6 +117,7 @@
         android:ems="10"
         android:hint="@string/phone_format"
         android:inputType="phone"
+        android:text="222-222-2222"
         android:textSize="@dimen/font_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.533"
@@ -182,6 +187,7 @@
         android:ems="10"
         android:hint="@string/phone_format"
         android:inputType="phone"
+        android:text="111-111-1111"
         android:textSize="@dimen/font_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.533"
@@ -197,6 +203,7 @@
         android:ems="10"
         android:hint="@string/customer_name"
         android:inputType="text"
+        android:text="aaa"
         android:textSize="@dimen/font_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView7"

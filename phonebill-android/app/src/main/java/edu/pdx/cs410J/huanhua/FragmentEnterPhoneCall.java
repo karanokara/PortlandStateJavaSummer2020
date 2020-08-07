@@ -16,6 +16,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 import edu.pdx.cs410J.ParserException;
 
@@ -84,7 +86,6 @@ public class FragmentEnterPhoneCall extends Fragment {
         });
     }
 
-
     /**
      * handle when click enter phone call
      */
@@ -97,7 +98,12 @@ public class FragmentEnterPhoneCall extends Fragment {
      * handle when click enter phone call
      */
     private void handleOnEnter() {
+        // String path = thisView.getContext().getApplicationInfo().dataDir;       // app dir path
+        // String path = thisView.getContext().getFilesDir().getPath();
+        File path = thisView.getContext().getFilesDir();
+
         PhoneCall call = null;
+        File file = null;
 
         EditText caller = (EditText) thisView.findViewById(R.id.input_caller);
         EditText callee = (EditText) thisView.findViewById(R.id.input_callee);
@@ -130,40 +136,67 @@ public class FragmentEnterPhoneCall extends Fragment {
             String customerStr = customer.getText().toString();
 
             // search phone bill
-            String path = thisView.getContext().getApplicationInfo().dataDir;
-            File file = new File(path, customerStr);
+            file = new File(path, customerStr);
 
             try {
                 bill = TextParser.parseFile(file);
-            } catch (ParserException e) {
+            }
+            catch (ParserException e) {
                 Snackbar.make(thisView, e.getMessage(), 5000)
                         .setAction("Action", null).show();
                 return;
             }
 
             if (bill == null) {
-                // create phone bill
+                // create phone bill non-existing customer
                 try {
                     bill = new PhoneBill(customerStr);
-                } catch (IllegalArgumentException e) {
+                }
+                catch (IllegalArgumentException e) {
                     Snackbar.make(thisView, e.getMessage(), 5000)
                             .setAction("Action", null).show();
                     return;
                 }
             }
+        } else {
+            // get a file for customer
+            file = new File(path, bill.getCustomer());
         }
 
         // create phone call
         try {
             call = new PhoneCall(callerStr, calleeStr, date1Str + " " + time1Str + " " + marker1Str, date2Str + " " + time2Str + " " + marker2Str);
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             Snackbar.make(thisView, e.getMessage(), 5000)
                     .setAction("Action", null).show();
             return;
         }
 
+        int callCountBefore = bill.getPhoneCalls().size();
+
         // add call to bill
         bill.addPhoneCall(call);
+
+        int callCountAfter = bill.getPhoneCalls().size();
+
+        if (callCountAfter == callCountBefore) {
+            Snackbar.make(thisView, "Phone call already exist.", 5000)
+                    .setAction("Action", null).show();
+            return;
+        }
+
+        // save bill to file
+        try {
+            PrintWriter pw = new PrintWriter(file);
+            pw.println(TextDumper.formatOutput(bill, null, null));
+            pw.close(); // need to be closed so can write out
+        }
+        catch (FileNotFoundException e) {
+            Snackbar.make(thisView, e.getMessage(), 5000)
+                    .setAction("Action", null).show();
+            return;
+        }
 
         Snackbar.make(thisView, "Add a phone call for \"" + bill.getCustomer() + "\" successfully.", 5000)
                 .setAction("Action", null).show();

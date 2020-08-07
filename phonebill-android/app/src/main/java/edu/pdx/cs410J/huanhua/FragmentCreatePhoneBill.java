@@ -13,6 +13,10 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
+
+import edu.pdx.cs410J.ParserException;
+
 public class FragmentCreatePhoneBill extends Fragment {
 
     private EditText customerText;
@@ -82,12 +86,34 @@ public class FragmentCreatePhoneBill extends Fragment {
         String customer = customerText.getText().toString();
         PhoneBill bill = null;
 
+        File path = thisView.getContext().getFilesDir();
+        File file = new File(path, customer);
+
         try {
-            bill = new PhoneBill(customer);
-        } catch (IllegalArgumentException e) {
+            bill = TextParser.parseFile(file);
+        }
+        catch (ParserException e) {
             Snackbar.make(thisView, e.getMessage(), 5000)
                     .setAction("Action", null).show();
             return;
+        }
+
+
+        if (bill == null) {
+            try {
+                bill = new PhoneBill(customer);
+            }
+            catch (IllegalArgumentException e) {
+                Snackbar.make(thisView, e.getMessage(), 5000)
+                        .setAction("Action", null).show();
+                return;
+            }
+
+            Snackbar.make(thisView, "Created a Phone Bill for \"" + customer + "\".", 5000)
+                    .setAction("Action", null).show();
+        } else {
+            Snackbar.make(thisView, "Found an existing Phone Bill for \"" + customer + "\".", 5000)
+                    .setAction("Action", null).show();
         }
 
         // prepare data to send to another fragment
@@ -95,12 +121,9 @@ public class FragmentCreatePhoneBill extends Fragment {
         // bundle.putString("customer", customer);
         bundle.putSerializable("bill", bill);
 
-
         // go to enter phone call fragment
         NavHostFragment.findNavController(FragmentCreatePhoneBill.this)
                 .navigate(R.id.action_create_to_enter, bundle);
 
-        Snackbar.make(thisView, "Created a Phone Bill for \"" + customer + "\".", 5000)
-                .setAction("Action", null).show();
     }
 }

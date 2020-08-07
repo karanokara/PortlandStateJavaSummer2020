@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,10 +22,7 @@ public class FragmentPrintBillResult extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            // mParam1 = getArguments().getString(ARG_PARAM1);
-            // mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
@@ -32,8 +30,17 @@ public class FragmentPrintBillResult extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         thisView = inflater.inflate(R.layout.fragment_print_bill_result, container, false);
+        TextView viewPrint = thisView.findViewById(R.id.view_print);
 
+        Bundle bundle = this.getArguments();
 
+        if (bundle != null) {
+            PhoneBill bill = (PhoneBill) bundle.getSerializable("bill");
+
+            viewPrint.setText(PrettyPrinter.constructPrettyOutput(bill));
+        } else {
+            viewPrint.setText("No result.");
+        }
         return thisView;
     }
 
@@ -56,7 +63,10 @@ public class FragmentPrintBillResult extends Fragment {
         });
     }
 
-    public void handleGoBack() {
+    /**
+     * handle event when click go back
+     */
+    private void handleGoBack() {
         NavHostFragment.findNavController(this)
                 .navigate(R.id.action_FragmentPrintBillResult_to_FragmentPrintBill);
     }
