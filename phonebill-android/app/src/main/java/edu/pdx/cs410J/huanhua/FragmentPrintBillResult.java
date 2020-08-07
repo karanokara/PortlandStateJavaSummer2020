@@ -36,8 +36,9 @@ public class FragmentPrintBillResult extends Fragment {
 
         if (bundle != null) {
             PhoneBill bill = (PhoneBill) bundle.getSerializable("bill");
+            String prettyString = PrettyPrinter.constructPrettyOutput(bill, null, null);
 
-            viewPrint.setText(PrettyPrinter.constructPrettyOutput(bill));
+            viewPrint.setText(prettyString);
         } else {
             viewPrint.setText("No result.");
         }
