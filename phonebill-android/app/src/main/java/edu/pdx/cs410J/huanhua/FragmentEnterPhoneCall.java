@@ -29,6 +29,7 @@ public class FragmentEnterPhoneCall extends Fragment {
     private View thisView = null;
 
     private PhoneBill bill = null;
+    private int backFragmentId = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,6 +40,8 @@ public class FragmentEnterPhoneCall extends Fragment {
         int toDelete = 0;
 
         if (bundle != null) {
+            this.backFragmentId = bundle.getInt("back");
+
             this.bill = (PhoneBill) bundle.getSerializable("bill");
 
             // remove customer input view
@@ -51,6 +54,8 @@ public class FragmentEnterPhoneCall extends Fragment {
         else {
             // remove customer display
             toDelete = R.id.display_customer_name;
+
+            this.backFragmentId = R.id.action_FragmentEnterPhoneCall_to_FragmentMain;
         }
 
         // remove customer input view
@@ -92,7 +97,7 @@ public class FragmentEnterPhoneCall extends Fragment {
      */
     private void handleGoBack() {
         NavHostFragment.findNavController(FragmentEnterPhoneCall.this)
-                .navigate(R.id.action_FragmentEnterPhoneCall_to_FragmentMain);
+                .navigate(this.backFragmentId);
     }
 
     /**

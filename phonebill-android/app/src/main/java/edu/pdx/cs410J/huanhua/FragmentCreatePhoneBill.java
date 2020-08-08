@@ -124,6 +124,7 @@ public class FragmentCreatePhoneBill extends Fragment {
         Bundle bundle = new Bundle();
         // bundle.putString("customer", customer);
         bundle.putSerializable("bill", bill);
+        bundle.putInt("back", R.id.action_FragmentEnterPhoneCall_to_FragmentCreatePhoneBill);
 
         // go to enter phone call fragment
         NavHostFragment.findNavController(FragmentCreatePhoneBill.this)

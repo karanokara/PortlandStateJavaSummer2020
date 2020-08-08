@@ -172,9 +172,11 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable<PhoneCall
         int timeDiff = this.startTime.compareTo(call.getStartTime());
         if (timeDiff > 0) {
             return 1;
-        } else if (timeDiff < 0) {
+        }
+        else if (timeDiff < 0) {
             return -1;
-        } else {
+        }
+        else {
             int phoneDiff = this.callerPhoneNumber.compareTo(call.getCaller());
             if (phoneDiff > 0)
                 return 1;
@@ -195,7 +197,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable<PhoneCall
     private String validatePhone(String phone) throws IllegalArgumentException {
         String phones[] = phone.split("-");
         if (phones.length != 3) {
-            throw new IllegalArgumentException("Invalid phone argument");
+            throw new IllegalArgumentException("Invalid phone argument: " + phone);
         }
 
         String fi = phones[0];
@@ -219,7 +221,7 @@ public class PhoneCall extends AbstractPhoneCall implements Comparable<PhoneCall
             }
         }
         catch (Exception e) {
-            throw new IllegalArgumentException("Invalid phone argument");
+            throw new IllegalArgumentException("Invalid phone argument: " + phone);
         }
 
 

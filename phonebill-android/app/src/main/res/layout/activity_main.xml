@@ -9,16 +9,14 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#FFFFFF"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:titleTextColor="#000000" />
+            android:theme="@style/AppTheme.PopupOverlay"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -34,6 +32,6 @@
         android:layout_margin="20dp"
         android:clickable="true"
         android:src="@drawable/help_text"
-        app:backgroundTint="#F3DEDE" />
+        app:backgroundTint="@color/colorIcon" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,19 +1,62 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!--   color for the app bar and other primary UI elements -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+
+        <!--  STATUS BAR bg COLOR -->
+        <item name="android:statusBarColor">@color/colorText</item>
+
+        <!--   used for the status bar (on Android 5.0+) and contextual app bars -->
+        <item name="colorPrimaryDark">#62C376</item>
+
+
+        <!-- used for hightlighting, such as input underscore -->
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- app bar title text color-->
+        <item name="titleTextColor">@color/colorText</item>
+
+        <!-- scrollbar color -->
+        <item name="colorControlNormal">@color/colorAccent</item>
+
+        <!-- input text color -->
+        <!-- arrow icon color, only work on this them parent -->
+        <item name="android:textColorPrimary">@color/colorText</item>
+
+        <!-- bottom navi bar bg -->
+        <item name="android:navigationBarColor">@color/colorText</item>
+        <!--        <item name="android:windowLightNavigationBar">true</item>-->
+
+        <!-- Used for the background -->
+        <!--        <item name="android:background">@color/colorPrimaryDark</item>-->
+
+
+        <!-- unknown -->
+        <!--        <item name="drawerArrowStyle">@style/AppTheme.PopupOverlay</item>-->
+        <!--        <item name="android:textColor">@color/colorText</item>-->
+        <item name="android:textColorSecondary">#FF812E</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorControlNormal">@color/colorAccent</item>
+
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <!-- apply to appBar layout -->
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!--        <item name="colorControlNormal">@color/colorText</item>-->
+    </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- apply to toolbar -->
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+
+        <!-- back arrow color, need to apply to theme -->
+        <item name="colorControlNormal">@color/colorText</item>
+    </style>
+
 
 </resources>

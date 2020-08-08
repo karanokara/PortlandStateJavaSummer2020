@@ -51,6 +51,9 @@
         <action
             android:id="@+id/action_FragmentEnterPhoneCall_to_FragmentMain"
             app:destination="@id/FragmentMain" />
+        <action
+            android:id="@+id/action_FragmentEnterPhoneCall_to_FragmentCreatePhoneBill"
+            app:destination="@id/FragmentCreatePhoneBill" />
     </fragment>
     <fragment
         android:id="@+id/FragmentPrintBill"
