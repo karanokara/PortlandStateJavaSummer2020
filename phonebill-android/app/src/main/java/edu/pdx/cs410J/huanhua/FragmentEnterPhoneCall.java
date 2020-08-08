@@ -47,7 +47,8 @@ public class FragmentEnterPhoneCall extends Fragment {
             // show customer name
             TextView customerDisplayView = thisView.findViewById(R.id.display_customer_name);
             customerDisplayView.setText(this.bill.getCustomer());
-        } else {
+        }
+        else {
             // remove customer display
             toDelete = R.id.display_customer_name;
         }
@@ -107,12 +108,13 @@ public class FragmentEnterPhoneCall extends Fragment {
 
         EditText caller = (EditText) thisView.findViewById(R.id.input_caller);
         EditText callee = (EditText) thisView.findViewById(R.id.input_callee);
+
         EditText date1 = (EditText) thisView.findViewById(R.id.input_start_date);
         EditText time1 = (EditText) thisView.findViewById(R.id.input_start_time);
-        RadioGroup marker1 = (RadioGroup) thisView.findViewById(R.id.input_start_marker);
+        RadioGroup marker1 = (RadioGroup) thisView.findViewById(R.id.input_search_start_marker);
         EditText date2 = (EditText) thisView.findViewById(R.id.input_end_date);
         EditText time2 = (EditText) thisView.findViewById(R.id.input_end_time);
-        RadioGroup marker2 = (RadioGroup) thisView.findViewById(R.id.input_end_marker);
+        RadioGroup marker2 = (RadioGroup) thisView.findViewById(R.id.input_search_end_marker);
 
         String callerStr = caller.getText().toString();
         String calleeStr = callee.getText().toString();
@@ -122,6 +124,7 @@ public class FragmentEnterPhoneCall extends Fragment {
         String time2Str = time2.getText().toString();
         RadioButton marker1Btn = marker1.findViewById(marker1.getCheckedRadioButtonId());
         RadioButton marker2Btn = marker2.findViewById(marker2.getCheckedRadioButtonId());
+
         String marker1Str = "";
         String marker2Str = "";
 
@@ -158,7 +161,8 @@ public class FragmentEnterPhoneCall extends Fragment {
                     return;
                 }
             }
-        } else {
+        }
+        else {
             // get a file for customer
             file = new File(path, bill.getCustomer());
         }

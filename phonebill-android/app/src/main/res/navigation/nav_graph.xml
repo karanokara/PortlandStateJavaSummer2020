@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_FragmentMain_to_FragmentPrintBillResult"
             app:destination="@id/FragmentPrintBillResult" />
+        <action
+            android:id="@+id/action_FragmentMain_to_fragmentPrintBillSearch"
+            app:destination="@id/fragmentPrintBillSearch" />
     </fragment>
     <fragment
         android:id="@+id/FragmentCreatePhoneBill"
@@ -72,6 +75,9 @@
         <action
             android:id="@+id/action_FragmentPrintBillResult_to_FragmentMain"
             app:destination="@id/FragmentMain" />
+        <action
+            android:id="@+id/action_FragmentPrintBillResult_to_fragmentPrintBillSearch"
+            app:destination="@id/fragmentPrintBillSearch" />
     </fragment>
     <fragment
         android:id="@+id/fragmentEnterPhoneCallResult"
@@ -80,6 +86,18 @@
         tools:layout="@layout/fragment_enter_phone_call_result">
         <action
             android:id="@+id/action_fragmentEnterPhoneCallResult_to_FragmentMain"
+            app:destination="@id/FragmentMain" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentPrintBillSearch"
+        android:name="edu.pdx.cs410J.huanhua.FragmentPrintBillSearch"
+        android:label="fragment_print_bill_search"
+        tools:layout="@layout/fragment_print_bill_search" >
+        <action
+            android:id="@+id/action_fragmentPrintBillSearch_to_FragmentPrintBillResult"
+            app:destination="@id/FragmentPrintBillResult" />
+        <action
+            android:id="@+id/action_fragmentPrintBillSearch_to_FragmentMain"
             app:destination="@id/FragmentMain" />
     </fragment>
 </navigation>

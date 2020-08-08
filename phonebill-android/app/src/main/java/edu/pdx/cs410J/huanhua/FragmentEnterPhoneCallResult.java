@@ -38,7 +38,8 @@ public class FragmentEnterPhoneCallResult extends Fragment {
             PhoneCall call = (PhoneCall) bundle.getSerializable("call");
 
             viewPrint.setText(call.toString());
-        } else {
+        }
+        else {
             viewPrint.setText("No result.");
         }
         return thisView;

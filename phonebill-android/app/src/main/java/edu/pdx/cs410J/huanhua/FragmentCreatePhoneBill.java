@@ -17,6 +17,9 @@ import java.io.File;
 
 import edu.pdx.cs410J.ParserException;
 
+/**
+ * A fragment for creating phone bill
+ */
 public class FragmentCreatePhoneBill extends Fragment {
 
     private EditText customerText;
@@ -111,7 +114,8 @@ public class FragmentCreatePhoneBill extends Fragment {
 
             Snackbar.make(thisView, "Created a Phone Bill for \"" + customer + "\".", 5000)
                     .setAction("Action", null).show();
-        } else {
+        }
+        else {
             Snackbar.make(thisView, "Found an existing Phone Bill for \"" + customer + "\".", 5000)
                     .setAction("Action", null).show();
         }

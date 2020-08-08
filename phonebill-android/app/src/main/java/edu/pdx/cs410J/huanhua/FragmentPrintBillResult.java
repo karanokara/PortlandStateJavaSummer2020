@@ -10,12 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import java.util.Date;
+
 /**
  * A simple
  */
 public class FragmentPrintBillResult extends Fragment {
 
     private View thisView = null;
+    private int backFragmentId = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,22 +27,32 @@ public class FragmentPrintBillResult extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         thisView = inflater.inflate(R.layout.fragment_print_bill_result, container, false);
-        TextView viewPrint = thisView.findViewById(R.id.view_print_enter_call);
 
+        TextView viewPrint = thisView.findViewById(R.id.view_print_enter_call);
         Bundle bundle = this.getArguments();
 
         if (bundle != null) {
-            PhoneBill bill = (PhoneBill) bundle.getSerializable("bill");
-            String prettyString = PrettyPrinter.constructPrettyOutput(bill, null, null);
+            this.backFragmentId = bundle.getInt("back");
 
-            viewPrint.setText(prettyString);
-        } else {
-            viewPrint.setText("No result.");
+            PhoneBill bill = (PhoneBill) bundle.getSerializable("bill");
+            Date start = (Date) bundle.getSerializable("start");
+            Date end = (Date) bundle.getSerializable("end");
+            if (bill != null) {
+                String prettyString = PrettyPrinter.constructPrettyOutput(bill, start, end);
+                viewPrint.setText(prettyString);
+            }
+            else {
+                viewPrint.setText("No result.");
+            }
         }
+        else {
+            viewPrint.setText("Error.");
+        }
+
+
         return thisView;
     }
 
@@ -75,7 +88,7 @@ public class FragmentPrintBillResult extends Fragment {
      */
     private void handleGoBack() {
         NavHostFragment.findNavController(this)
-                .navigate(R.id.action_FragmentPrintBillResult_to_FragmentPrintBill);
+                .navigate(this.backFragmentId);
     }
 
     /**

@@ -17,7 +17,7 @@ import java.io.File;
 import edu.pdx.cs410J.ParserException;
 
 /**
- * A fragmnent
+ * A fragmnent for print a whole phone bill
  */
 public class FragmentPrintBill extends Fragment {
 
@@ -105,6 +105,7 @@ public class FragmentPrintBill extends Fragment {
             Bundle bundle = new Bundle();
             // bundle.putString("customer", customer);
             bundle.putSerializable("bill", bill);
+            bundle.putInt("back", R.id.action_FragmentPrintBillResult_to_FragmentPrintBill);
 
             // go to result fragment
             NavHostFragment.findNavController(FragmentPrintBill.this)

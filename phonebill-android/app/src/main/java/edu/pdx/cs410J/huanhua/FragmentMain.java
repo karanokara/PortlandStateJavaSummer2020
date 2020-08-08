@@ -63,7 +63,7 @@ public class FragmentMain extends Fragment {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(FragmentMain.this)
-                        .navigate(R.id.action_FragmentMain_to_FragmentPrintBillResult);
+                        .navigate(R.id.action_FragmentMain_to_fragmentPrintBillSearch);
             }
         });
     }

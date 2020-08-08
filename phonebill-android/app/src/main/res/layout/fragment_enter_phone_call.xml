@@ -8,23 +8,23 @@
 
 
     <RadioGroup
-        android:id="@+id/input_end_marker"
+        android:id="@+id/input_search_end_marker"
         android:layout_width="58dp"
         android:layout_height="65dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/input_end_time"
-        app:layout_constraintTop_toBottomOf="@+id/input_start_marker">
+        app:layout_constraintTop_toBottomOf="@+id/input_search_start_marker">
 
         <RadioButton
-            android:id="@+id/input_end_am"
+            android:id="@+id/input_search_end_am"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/am" />
 
         <RadioButton
-            android:id="@+id/input_end_pm"
+            android:id="@+id/input_search_end_pm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/pm" />
@@ -48,9 +48,8 @@
         android:layout_marginStart="66dp"
         android:layout_marginTop="28dp"
         android:ems="5"
-        android:hint="@string/date"
+        android:hint="@string/date_format"
         android:inputType="date"
-        android:text="12/1/20"
         android:textSize="@dimen/font_size"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/input_start_date" />
@@ -62,9 +61,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="28dp"
         android:ems="5"
-        android:hint="@string/time"
+        android:hint="@string/time_format"
         android:inputType="time"
-        android:text="12:08"
         android:textSize="@dimen/font_size"
         app:layout_constraintStart_toEndOf="@+id/input_end_date"
         app:layout_constraintTop_toBottomOf="@+id/input_start_time" />
@@ -76,9 +74,8 @@
         android:layout_marginStart="58dp"
         android:layout_marginTop="28dp"
         android:ems="5"
-        android:hint="@string/date"
+        android:hint="@string/date_format"
         android:inputType="date"
-        android:text="12/1/20"
         android:textSize="@dimen/font_size"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/input_callee" />
@@ -90,9 +87,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="28dp"
         android:ems="5"
-        android:hint="@string/time"
+        android:hint="@string/time_format"
         android:inputType="time"
-        android:text="12:05"
         android:textSize="@dimen/font_size"
         app:layout_constraintStart_toEndOf="@+id/input_start_date"
         app:layout_constraintTop_toBottomOf="@+id/input_callee" />
@@ -116,7 +112,6 @@
         android:ems="10"
         android:hint="@string/phone_format"
         android:inputType="phone"
-        android:text="222-222-2222"
         android:textSize="@dimen/font_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.533"
@@ -186,7 +181,6 @@
         android:ems="10"
         android:hint="@string/phone_format"
         android:inputType="phone"
-        android:text="111-111-1111"
         android:textSize="@dimen/font_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.533"
@@ -202,14 +196,13 @@
         android:ems="10"
         android:hint="@string/customer_name"
         android:inputType="text"
-        android:text="aaa"
         android:textSize="@dimen/font_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
-        android:id="@+id/input_start_marker"
+        android:id="@+id/input_search_start_marker"
         android:layout_width="58dp"
         android:layout_height="65dp"
         android:layout_marginTop="10dp"
@@ -219,13 +212,13 @@
         app:layout_constraintTop_toBottomOf="@+id/input_callee">
 
         <RadioButton
-            android:id="@+id/input_start_am"
+            android:id="@+id/input_search_start_am"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/am" />
 
         <RadioButton
-            android:id="@+id/input_start_pm"
+            android:id="@+id/input_search_start_pm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/pm" />
