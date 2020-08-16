@@ -18,6 +18,7 @@ public class AboutDefaultMethods {
 			
 		};
 		
+		// capitalize() is a default method
 		String capitalizedReversed = stringUtil.capitalize(stringUtil.reverse("gnirut"));
 		
 		assertEquals(capitalizedReversed, "TURING");

@@ -1,0 +1,49 @@
+
+koan:
+./mvnw exec:java
+
+
+create project:
+./createProject1.sh huanhua
+
+
+Execute jar:
+java -jar target/phonebill-Summer2020.jar abc 111-111-1111 111-111-1112 1/15/2020 19:35 1/15/2020 19:39
+java -jar target/phonebill-client.jar abc 111-111-1111 111-111-1112 1/15/2020 19:35 1/15/2020 19:39
+
+
+verify:
+./mvnw verify
+../mvnw verify
+
+
+Test coverage:
+../mvnw -Pgrader clean verify
+
+
+Build Website for javadoc, maven report
+./mvnw site
+
+Submit:
+cd project/
+
+java -cp /u/whitlock/jars/grader.jar edu.pdx.cs410J.grader.Submit \
+Project4 "Kanra Su" huanhua huanhua@pdx.edu \
+-comment "This is for Project 4, there are some original files from Dave that I don't want to delete, so I commented them out for archive purpose" src
+
+java -cp /u/whitlock/jars/grader.jar edu.pdx.cs410J.grader.Submit \
+koans "Kanra Su" huanhua huanhua@pdx.edu \
+-comment "When run the koans in another machine, like the school linux, the files are not updated after pulling down from Github, need to touch every file so koans can get updates." src
+
+cd <location of Android project>
+java -cp /u/whitlock/jars/grader.jar edu.pdx.cs410J.grader.SubmitAndroidProject \
+"Kanra Su" huanhua huanhua@pdx.edu .
+
+
+Server:
+./mvnw jetty:run
+
+
+Change port:
+export MAVEN_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+
